@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioImun – Daftar Akun | E-Module Sistem Pertahanan Tubuh</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #1a6b4a;
+  --primary-light: #27a96e;
+  --primary-dark: #0d4530;
+  --accent: #0e7fb5;
+  --accent-light: #38b6f0;
+  --bg: #f4faf7;
+  --bg2: #e6f2ed;
+  --white: #ffffff;
+  --text: #1a2e25;
+  --text-muted: #5a7a6a;
+  --border: #c4ddd1;
+  --danger: #ef4444;
+  --success: #22c55e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #0a3322 0%, #0d4530 35%, #1a6b4a 70%, #0e7fb5 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+  overflow-y: auto;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(56,182,240,.16) 0%, transparent 70%);
+  top: -120px; right: -120px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(39,169,110,.14) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-5px); }
+  40%,80% { transform: translateX(5px); }
+}
+@keyframes popIn {
+  0%   { opacity:0; transform: scale(.8) translateY(10px); }
+  100% { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.animate-in { animation: fadeSlideUp .65s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── OUTER WRAPPER ── */
+.page-wrapper {
+  display: flex;
+  max-width: 980px;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.50), 0 0 0 1px rgba(255,255,255,.07);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── VISUAL PANEL ── */
+.reg-visual {
+  width: 320px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, #081e14 0%, #0d4530 40%, #1a6b4a 75%, #0e7fb5 100%);
+  padding: 52px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.reg-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.deco-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.07);
+}
+.deco-ring-1 { width: 260px; height: 260px; bottom: -80px; right: -80px; }
+.deco-ring-2 { width: 160px; height: 160px; top: 20px; right: 10px; animation: spinSlow 22s linear infinite; }
+.deco-ring-3 { width: 80px;  height: 80px;  top: 60px; right: 50px; animation: spinSlow 14s linear infinite reverse; border-color: rgba(56,182,240,.18); }
+
+.reg-brand { position: relative; z-index: 1; }
+.reg-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+.reg-brand h1 span { color: #38b6f0; }
+.reg-brand .tagline { font-size: .9rem; opacity: .8; line-height: 1.7; }
+.reg-brand .sub-tagline { margin-top: 8px; font-size: .73rem; opacity: .5; }
+
+.reg-steps {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 13px;
+  font-size: .82rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  transition: background .2s;
+}
+.step-item:hover { background: rgba(255,255,255,.14); }
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(56,182,240,.35);
+  border: 1px solid rgba(56,182,240,.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── FORM PANEL ── */
+.reg-form-box {
+  flex: 1;
+  background: #fff;
+  padding: 52px 48px 44px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* ← Back link */
+.back-link {
+  position: absolute;
+  top: 22px; left: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color .2s, gap .2s;
+}
+.back-link:hover { color: var(--primary); gap: 10px; }
+.back-link i { font-size: .75rem; transition: transform .2s; }
+.back-link:hover i { transform: translateX(-3px); }
+
+/* Heading */
+.form-heading { margin-bottom: 26px; margin-top: 10px; }
+.form-heading h2 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--primary-dark);
+  margin-bottom: 5px;
+}
+.form-heading p { color: var(--text-muted); font-size: .9rem; }
+
+/* Role tabs */
+.role-tabs { display: flex; gap: 10px; margin-bottom: 22px; }
+.role-tab {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: .86rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all .22s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.role-tab.active {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(13,69,48,.3);
+}
+.role-tab:hover:not(.active) { border-color: var(--primary-light); color: var(--primary); }
+
+/* Two-column grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+.form-grid .form-group { grid-column: auto; }
+.form-grid .full-col   { grid-column: 1 / -1; }
+
+/* Form groups */
+.form-group { margin-bottom: 15px; }
+.form-group label {
+  display: block;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.input-wrap { position: relative; }
+
+.input-wrap .icon-left {
+  position: absolute;
+  left: 13px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: .85rem;
+  pointer-events: none;
+  transition: color .2s;
+}
+
+.icon-eye {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: .86rem;
+  cursor: pointer;
+  padding: 5px 6px;
+  border-radius: 7px;
+  transition: color .2s, background .2s;
+  user-select: none;
+}
+.icon-eye:hover { color: var(--primary); background: var(--bg2); }
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 42px 12px 40px;
+  border: 2px solid var(--border);
+  border-radius: 11px;
+  font-family: 'Nunito', sans-serif;
+  font-size: .9rem;
+  color: var(--text);
+  outline: none;
+  transition: border .2s, box-shadow .2s, background .2s;
+  background: var(--bg);
+  appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-light);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(39,169,110,.1);
+}
+.form-group input.no-right-pad { padding-right: 14px; }
+.form-group select { padding-right: 14px; cursor: pointer; }
+
+.input-error-field { border-color: var(--danger) !important; animation: shake .4s ease; }
+
+/* Password strength bar */
+.strength-wrap { margin-top: 7px; display: none; }
+.strength-wrap.visible { display: block; }
+.strength-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.strength-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .4s ease, background .4s ease;
+  width: 0;
+}
+.strength-label { font-size: .72rem; font-weight: 700; }
+
+/* Kelas field (conditional) */
+#group-kelas { transition: opacity .3s; }
+
+/* Error & Success boxes */
+.msg-box {
+  border-radius: 11px;
+  padding: 12px 16px;
+  font-size: .84rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: none;
+  align-items: center;
+  gap: 9px;
+}
+.msg-error   { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.msg-success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+
+/* ── Submit button ── */
+.btn-register {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 55%, var(--accent) 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: .98rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: .3px;
+  margin-top: 6px;
+}
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(14,127,181,.4);
+}
+.btn-register:active { transform: translateY(0); box-shadow: none; }
+.btn-register:disabled { opacity: .7; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-arrow { transition: transform .2s; display: inline-block; }
+.btn-register:hover .btn-arrow { transform: translateX(5px); }
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--text-muted);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Login link */
+.login-row {
+  text-align: center;
+  font-size: .87rem;
+  color: var(--text-muted);
+}
+.login-row a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: none;
+  transition: color .2s;
+  position: relative;
+}
+.login-row a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 0; height: 2px;
+  background: var(--primary-light);
+  border-radius: 2px;
+  transition: width .25s;
+}
+.login-row a:hover { color: var(--accent); }
+.login-row a:hover::after { width: 100%; }
+
+/* ── SUCCESS SCREEN ── */
+.success-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  flex: 1;
+  animation: popIn .5s cubic-bezier(.22,1,.36,1) both;
+}
+.success-icon {
+  width: 86px; height: 86px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  border: 3px solid #86efac;
+}
+.success-screen h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+.success-screen p { color: var(--text-muted); font-size: .91rem; line-height: 1.65; }
+.btn-go-login {
+  padding: 13px 32px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: .95rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-go-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,69,48,.3); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  .reg-visual { display: none; }
+  .reg-form-box { padding: 52px 24px 36px; }
+  .page-wrapper { border-radius: 20px; max-width: 460px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full-col { grid-column: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrapper animate-in">
+
+  <!-- ══════════ VISUAL PANEL ══════════ -->
+  <div class="reg-visual">
+    <div class="deco-ring deco-ring-1"></div>
+    <div class="deco-ring deco-ring-2"></div>
+    <div class="deco-ring deco-ring-3"></div>
+
+    <div class="reg-brand">
+      <h1>Bio<span>Imun</span></h1>
+      <p class="tagline">Bergabunglah dan mulai perjalanan belajarmu bersama BioImun</p>
+      <p class="sub-tagline">E-Module Biologi Kelas XI &nbsp;·&nbsp; Kurikulum Merdeka</p>
+    </div>
+
+    <div class="reg-steps">
+      <div class="step-item"><div class="step-num">1</div> Isi data diri</div>
+      <div class="step-item"><div class="step-num">2</div> Buat password</div>
+      <div class="step-item"><div class="step-num">3</div> Mulai belajar 🚀</div>
+    </div>
+  </div>
+
+  <!-- ══════════ FORM PANEL ══════════ -->
+  <div class="reg-form-box">
+
+    <!-- ← Kembali ke Login -->
+    <a href="login.html" class="back-link">
+      <i class="fas fa-chevron-left"></i> Kembali ke Login
+    </a>
+
+    <!-- ── FORM VIEW ── -->
+    <div id="form-view">
+      <div class="form-heading">
+        <h2>Buat Akun Baru ✨</h2>
+        <p>Daftarkan dirimu untuk mengakses semua fitur e-module</p>
+      </div>
+
+      <!-- Role -->
+      <div class="role-tabs">
+        <div class="role-tab active" id="tab-siswa" onclick="setRole('siswa')">
+          <i class="fas fa-user-graduate"></i> Siswa
+        </div>
+        <div class="role-tab" id="tab-guru" onclick="setRole('guru')">
+          <i class="fas fa-chalkboard-teacher"></i> Guru
+        </div>
+      </div>
+
+      <!-- Error / Success -->
+      <div class="msg-box msg-error" id="msg-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="msg-error-text">Terjadi kesalahan.</span>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Nama Lengkap -->
+        <div class="form-group full-col">
+          <label>Nama Lengkap <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-id-card icon-left"></i>
+            <input type="text" id="inp-name" class="no-right-pad" placeholder="Contoh: Budi Santoso">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group full-col">
+          <label>Email <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope icon-left"></i>
+            <input type="email" id="inp-email" class="no-right-pad" placeholder="contoh@email.com">
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="form-group">
+          <label>Username <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-at icon-left"></i>
+            <input type="text" id="inp-username" class="no-right-pad" placeholder="username unik"
+                   oninput="checkUsername(this.value)">
+          </div>
+          <div id="username-hint" style="font-size:.72rem;margin-top:5px;font-weight:700;"></div>
+        </div>
+
+        <!-- Kelas / Jabatan -->
+        <div class="form-group" id="group-kelas">
+          <label id="label-kelas">Kelas <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-school icon-left"></i>
+            <input type="text" id="inp-kelas" class="no-right-pad" placeholder="Contoh: XI IPA 2">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label>Password <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock icon-left"></i>
+            <input type="password" id="inp-pass" placeholder="Min. 6 karakter"
+                   oninput="checkStrength(this.value)">
+            <i class="fas fa-eye icon-eye" id="eye1" onclick="togglePass('inp-pass','eye1')"></i>
+          </div>
+          <!-- Strength bar -->
+          <div class="strength-wrap" id="strength-wrap">
+            <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+            <div class="strength-label" id="strength-label"></div>
+          </div>
+        </div>
+
+        <!-- Konfirmasi Password -->
+        <div class="form-group">
+          <label>Konfirmasi Password <span style="color:var(--danger)">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock icon-left"></i>
+            <input type="password" id="inp-pass2" placeholder="Ulangi password"
+                   oninput="checkMatch()">
+            <i class="fas fa-eye icon-eye" id="eye2" onclick="togglePass('inp-pass2','eye2')"></i>
+          </div>
+          <div id="match-hint" style="font-size:.72rem;margin-top:5px;font-weight:700;"></div>
+        </div>
+
+      </div><!-- end form-grid -->
+
+      <!-- Syarat -->
+      <div style="display:flex;align-items:flex-start;gap:10px;margin:4px 0 14px;font-size:.82rem;color:var(--text-muted);">
+        <input type="checkbox" id="chk-terms" style="margin-top:3px;accent-color:var(--primary);cursor:pointer;">
+        <label for="chk-terms" style="cursor:pointer;line-height:1.5;">
+          Saya menyetujui <a href="#" style="color:var(--primary);font-weight:700;">syarat &amp; ketentuan</a>
+          penggunaan e-module BioImun.
+        </label>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn-register" id="btn-register" onclick="doRegister()">
+        Buat Akun <span class="btn-arrow">→</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">atau</div>
+
+      <!-- Sudah punya akun -->
+      <div class="login-row">
+        Sudah punya akun? <a href="login.html">Masuk sekarang</a>
+      </div>
+    </div><!-- end form-view -->
+
+    <!-- ── SUCCESS SCREEN ── -->
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">✅</div>
+      <h3>Akun Berhasil Dibuat! 🎉</h3>
+      <p>
+        Selamat datang di BioImun!<br>
+        Akun kamu sudah aktif dan siap digunakan.<br>
+        Silakan masuk menggunakan username dan password yang baru saja kamu buat.
+      </p>
+      <p id="success-detail" style="background:var(--bg2);border-radius:12px;padding:12px 20px;font-size:.82rem;font-weight:700;color:var(--primary-dark);margin-top:4px;"></p>
+      <button class="btn-go-login" onclick="window.location.href='login.html'">
+        <i class="fas fa-sign-in-alt"></i> Masuk ke E-Module
+      </button>
+    </div>
+
+  </div><!-- end reg-form-box -->
+</div><!-- end page-wrapper -->
+
+<!-- ══════════════════════════════════
+     SCRIPT
+══════════════════════════════════ -->
+<script>
+const USERS_DB_KEY = 'bioimun_registered_users';
+const RESERVED_USERNAMES = ['siswa','guru','admin'];
+
+let selectedRole = 'siswa';
+
+/* ── Role toggle ── */
+function setRole(r) {
+  selectedRole = r;
+  document.getElementById('tab-siswa').classList.toggle('active', r === 'siswa');
+  document.getElementById('tab-guru').classList.toggle('active', r === 'guru');
+
+  const labelKelas = document.getElementById('label-kelas');
+  const inpKelas   = document.getElementById('inp-kelas');
+
+  if (r === 'guru') {
+    labelKelas.innerHTML = 'Jabatan / Mata Pelajaran <span style="color:var(--danger)">*</span>';
+    inpKelas.placeholder = 'Contoh: Guru Biologi';
+  } else {
+    labelKelas.innerHTML = 'Kelas <span style="color:var(--danger)">*</span>';
+    inpKelas.placeholder = 'Contoh: XI IPA 2';
+  }
+  inpKelas.value = '';
+}
+
+/* ── Password show/hide ── */
+function togglePass(inputId, iconId) {
+  const inp  = document.getElementById(inputId);
+  const icon = document.getElementById(iconId);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    inp.type = 'password';
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
+}
+
+/* ── Password strength ── */
+function checkStrength(val) {
+  const wrap  = document.getElementById('strength-wrap');
+  const fill  = document.getElementById('strength-fill');
+  const label = document.getElementById('strength-label');
+  if (!val) { wrap.classList.remove('visible'); return; }
+  wrap.classList.add('visible');
+
+  let score = 0;
+  if (val.length >= 6)  score++;
+  if (val.length >= 10) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  const levels = [
+    { w: '20%',  bg: '#ef4444', txt: '🔴 Sangat lemah' },
+    { w: '40%',  bg: '#f97316', txt: '🟠 Lemah' },
+    { w: '60%',  bg: '#eab308', txt: '🟡 Cukup' },
+    { w: '80%',  bg: '#22c55e', txt: '🟢 Kuat' },
+    { w: '100%', bg: '#15803d', txt: '💪 Sangat kuat' },
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  fill.style.width      = lvl.w;
+  fill.style.background = lvl.bg;
+  label.textContent     = lvl.txt;
+  label.style.color     = lvl.bg;
+}
+
+/* ── Password match ── */
+function checkMatch() {
+  const p1   = document.getElementById('inp-pass').value;
+  const p2   = document.getElementById('inp-pass2').value;
+  const hint = document.getElementById('match-hint');
+  if (!p2) { hint.textContent = ''; return; }
+  if (p1 === p2) {
+    hint.textContent = '✅ Password cocok';
+    hint.style.color = '#16a34a';
+  } else {
+    hint.textContent = '❌ Password tidak cocok';
+    hint.style.color = '#dc2626';
+  }
+}
+
+/* ── Username availability check ── */
+function checkUsername(val) {
+  const hint = document.getElementById('username-hint');
+  if (!val) { hint.textContent = ''; return; }
+  if (val.length < 3) {
+    hint.textContent = '⚠️ Minimal 3 karakter';
+    hint.style.color = '#f97316'; return;
+  }
+  if (!/^[a-zA-Z0-9_]+$/.test(val)) {
+    hint.textContent = '⚠️ Hanya huruf, angka, dan underscore';
+    hint.style.color = '#f97316'; return;
+  }
+
+  const existing = getAllUsers();
+  if (RESERVED_USERNAMES.includes(val.toLowerCase()) || existing[val.toLowerCase()]) {
+    hint.textContent = '❌ Username sudah digunakan';
+    hint.style.color = '#dc2626';
+  } else {
+    hint.textContent = '✅ Username tersedia';
+    hint.style.color = '#16a34a';
+  }
+}
+
+/* ── Get all users ── */
+function getAllUsers() {
+  const DEFAULT = {
+    siswa: { pass: 'siswa123', role: 'siswa', name: 'Ahmad Fauzi', kelas: 'XI IPA 2', email: 'siswa@bioimun.id' },
+    guru:  { pass: 'guru123',  role: 'guru',  name: 'Ibu Sari',    kelas: 'Guru Biologi', email: 'guru@bioimun.id' }
+  };
+  const extra = localStorage.getItem(USERS_DB_KEY);
+  return extra ? { ...DEFAULT, ...JSON.parse(extra) } : { ...DEFAULT };
+}
+
+/* ── Save new user ── */
+function saveUser(key, data) {
+  const existing = localStorage.getItem(USERS_DB_KEY);
+  const current  = existing ? JSON.parse(existing) : {};
+  current[key]   = data;
+  localStorage.setItem(USERS_DB_KEY, JSON.stringify(current));
+}
+
+/* ── Show error ── */
+function showError(msg) {
+  const box = document.getElementById('msg-error');
+  document.getElementById('msg-error-text').textContent = msg;
+  box.style.display = 'flex';
+  setTimeout(() => box.style.display = 'none', 4000);
+}
+
+/* ── Validate email format ── */
+function isValidEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+/* ── REGISTER ── */
+function doRegister() {
+  const name     = document.getElementById('inp-name').value.trim();
+  const email    = document.getElementById('inp-email').value.trim();
+  const username = document.getElementById('inp-username').value.trim().toLowerCase();
+  const kelas    = document.getElementById('inp-kelas').value;
+  const pass     = document.getElementById('inp-pass').value;
+  const pass2    = document.getElementById('inp-pass2').value;
+  const terms    = document.getElementById('chk-terms').checked;
+  const btn      = document.getElementById('btn-register');
+
+  /* ── Validasi ── */
+  if (!name || !email || !username || !kelas || !pass || !pass2) {
+    showError('Semua kolom wajib diisi!'); return;
+  }
+  if (!isValidEmail(email)) {
+    showError('Format email tidak valid!'); return;
+  }
+  if (username.length < 3 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+    showError('Username minimal 3 karakter dan hanya boleh huruf, angka, underscore!'); return;
+  }
+  if (pass.length < 6) {
+    showError('Password minimal 6 karakter!'); return;
+  }
+  if (pass !== pass2) {
+    showError('Konfirmasi password tidak cocok!'); return;
+  }
+  if (!terms) {
+    showError('Centang syarat & ketentuan terlebih dahulu!'); return;
+  }
+
+  /* ── Cek username ── */
+  const allUsers = getAllUsers();
+  if (RESERVED_USERNAMES.includes(username) || allUsers[username]) {
+    showError('Username sudah digunakan. Coba username lain!'); return;
+  }
+
+  /* ── Cek email duplikat ── */
+  for (const val of Object.values(allUsers)) {
+    if (val.email && val.email.toLowerCase() === email.toLowerCase()) {
+      showError('Email sudah terdaftar. Gunakan email lain atau masuk ke akun yang sudah ada!'); return;
+    }
+  }
+
+  /* ── Loading state ── */
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Membuat akun...';
+  btn.disabled  = true;
+
+  setTimeout(() => {
+    saveUser(username, { pass, role: selectedRole, name, kelas, email });
+
+    // ── SYNC registrasi ke Google Sheets ──
+    if (typeof sendToSheet === 'function') {
+      sendToSheet('login', { username, nama: name, role: selectedRole, kelas, email });
+    }
+
+    /* Tampilkan success screen */
+    document.getElementById('form-view').style.display = 'none';
+    const ss = document.getElementById('success-screen');
+    ss.style.display = 'flex';
+    document.getElementById('success-detail').textContent =
+      `Username: ${username}  ·  Role: ${selectedRole === 'siswa' ? 'Siswa' : 'Guru'}  ·  ${kelas}`;
+  }, 900);
+}
+</script>
+<script src="sync.js"></script>
+</body>
+</html>

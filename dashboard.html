@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioImun – Dashboard | E-Module Sistem Pertahanan Tubuh</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== SIDEBAR OVERLAY (mobile) ===== -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebarMobile()"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="logo-icon"><i class="fas fa-dna"></i></div>
+      <div>
+        <div class="brand-name">BioImun</div>
+        <div class="brand-sub">E-Module Biologi SMA</div>
+      </div>
+    </div>
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Buka/Tutup Navigasi">
+      <i class="fas fa-bars" id="sidebar-toggle-icon"></i>
+    </button>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar" id="side-avatar">S</div>
+    <div class="user-info">
+      <div class="user-name" id="side-name">Siswa</div>
+      <div class="user-role" id="side-role">Pelajar · Kelas XI</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu Utama</div>
+    <div class="nav-item active" onclick="navigateTo('dashboard')">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <span class="nav-text">Beranda</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('kompetensi')">
+      <div class="nav-icon"><i class="fas fa-bullseye"></i></div>
+      <span class="nav-text">Kompetensi</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('ruangbelajar')">
+      <div class="nav-icon"><i class="fas fa-book-open"></i></div>
+      <span class="nav-text">Ruang Belajar</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('lkpd')">
+      <div class="nav-icon"><i class="fas fa-tasks"></i></div>
+      <span class="nav-text">LKPD</span>
+      <span class="nav-badge">PBL</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('drill')">
+      <div class="nav-icon"><i class="fas fa-pencil-alt"></i></div>
+      <span class="nav-text">Drill Soal</span>
+    </div>
+
+    <div class="nav-label" style="margin-top:6px">Evaluasi</div>
+    <div class="nav-item" onclick="navigateTo('pretest')">
+      <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
+      <span class="nav-text">Pre-Test</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('angket')">
+      <div class="nav-icon"><i class="fas fa-poll"></i></div>
+      <span class="nav-text">Angket Ownership</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('posttest')">
+      <div class="nav-icon"><i class="fas fa-file-check"></i></div>
+      <span class="nav-text">Post-Test</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('reflektif')">
+      <div class="nav-icon"><i class="fas fa-lightbulb"></i></div>
+      <span class="nav-text">Esai Reflektif</span>
+    </div>
+
+    <div class="nav-label" style="margin-top:6px">Referensi</div>
+    <div class="nav-item" onclick="navigateTo('glosarium')">
+      <div class="nav-icon"><i class="fas fa-spell-check"></i></div>
+      <span class="nav-text">Glosarium</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('rujukan')">
+      <div class="nav-icon"><i class="fas fa-book"></i></div>
+      <span class="nav-text">Daftar Rujukan</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('identitas')">
+      <div class="nav-icon"><i class="fas fa-id-card"></i></div>
+      <span class="nav-text">Identitas Pengembang</span>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="doLogout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span class="logout-text">Keluar</span>
+    </button>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content" id="main-content">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <button style="width:36px;height:36px;border:2px solid var(--border);border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--text-muted);flex-shrink:0;" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="top-bar-title" id="topbar-title">🏠 Beranda</div>
+    </div>
+    <div class="top-bar-actions">
+      <span style="font-size:.82rem;font-weight:700;color:var(--text-muted)" id="topbar-user"></span>
+      <div class="progress-chip">
+        <i class="fas fa-chart-line" style="color:var(--primary)"></i>
+        <span>Progress</span>
+        <div class="progress-bar-mini"><div class="progress-bar-mini-fill" id="prog-mini" style="width:0%"></div></div>
+        <span id="prog-pct">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area">
+
+    <!-- ============================================================
+         BERANDA / DASHBOARD
+    ============================================================ -->
+    <div class="sub-page active" id="sp-dashboard">
+      <div class="dashboard-hero animate-in">
+        <h2>Selamat Datang, <span id="hero-name">Siswa</span>! 🎉</h2>
+        <p>Pelajari Sistem Pertahanan Tubuh Manusia melalui pendekatan Problem-Based Learning yang interaktif dan menyenangkan.</p>
+        <div class="hero-chips">
+          <div class="hero-chip">🛡️ Sistem Imun</div>
+          <div class="hero-chip">🔬 PBL Approach</div>
+          <div class="hero-chip">📚 Kelas XI SMA</div>
+          <div class="hero-chip">⚡ Kurikulum Merdeka</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-row animate-in" style="animation-delay:.1s">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#dcfce7"><i class="fas fa-book-open" style="color:#15803d"></i></div>
+          <div>
+            <div class="stat-label">Materi Selesai</div>
+            <div class="stat-val" id="stat-materi-done">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#dbeafe"><i class="fas fa-question-circle" style="color:#1d4ed8"></i></div>
+          <div>
+            <div class="stat-label">Total Soal</div>
+            <div class="stat-val">30+</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#f3e8ff"><i class="fas fa-star" style="color:#7c3aed"></i></div>
+          <div>
+            <div class="stat-label">Skor Terakhir</div>
+            <div class="stat-val" id="last-score">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Tracker -->
+      <div class="progress-overview animate-in" style="animation-delay:.15s">
+        <h3><i class="fas fa-chart-bar" style="color:var(--primary)"></i> Progres Belajar</h3>
+        <div class="prog-track">
+          <div class="prog-track-label"><span>🛡️ Sistem Pertahanan Tubuh</span><span id="ptl-0">0%</span></div>
+          <div class="prog-track-bar"><div class="prog-track-fill" id="prog-track-0" style="width:0%"></div></div>
+        </div>
+        <div class="prog-track">
+          <div class="prog-track-label"><span>🔰 Pertahanan Nonspesifik</span><span id="ptl-1">0%</span></div>
+          <div class="prog-track-bar"><div class="prog-track-fill" id="prog-track-1" style="width:0%"></div></div>
+        </div>
+        <div class="prog-track">
+          <div class="prog-track-label"><span>🎯 Pertahanan Spesifik</span><span id="ptl-2">0%</span></div>
+          <div class="prog-track-bar"><div class="prog-track-fill" id="prog-track-2" style="width:0%"></div></div>
+        </div>
+        <div class="prog-track">
+          <div class="prog-track-label"><span>💉 Jenis Imunitas</span><span id="ptl-3">0%</span></div>
+          <div class="prog-track-bar"><div class="prog-track-fill" id="prog-track-3" style="width:0%"></div></div>
+        </div>
+        <div class="prog-track" style="margin-bottom:0">
+          <div class="prog-track-label"><span>🦠 Gangguan Sistem Imun</span><span id="ptl-4">0%</span></div>
+          <div class="prog-track-bar"><div class="prog-track-fill" id="prog-track-4" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Gamifikasi -->
+      <div class="gamif-section animate-in" style="animation-delay:.2s">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <h3 style="font-size:1rem;font-weight:800;color:var(--primary-dark);margin:0;"><i class="fas fa-trophy" style="color:gold"></i> XP & Lencana</h3>
+          <span id="xp-val" style="font-size:.88rem;font-weight:800;color:var(--primary)">0 XP</span>
+        </div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-fill" style="width:0%"></div></div>
+        <div class="gamif-badges" id="badge-container"></div>
+      </div>
+
+      <!-- Menu Grid -->
+      <h3 style="font-size:.9rem;font-weight:800;color:var(--text-muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;" class="animate-in" style="animation-delay:.25s">Menu Utama</h3>
+      <div class="grid-cards animate-in" style="animation-delay:.3s">
+        <div class="menu-card" onclick="navigateTo('kompetensi')">
+          <div class="menu-card-icon mc-green"><i class="fas fa-bullseye" style="color:#15803d"></i></div>
+          <h3>Kompetensi</h3>
+          <p>Capaian pembelajaran dan tujuan pembelajaran</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('ruangbelajar')">
+          <div class="menu-card-icon mc-blue"><i class="fas fa-book-open" style="color:#1d4ed8"></i></div>
+          <h3>Ruang Belajar</h3>
+          <p>Materi lengkap sistem pertahanan tubuh</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('lkpd')">
+          <div class="menu-card-icon mc-teal"><i class="fas fa-tasks" style="color:#0f766e"></i></div>
+          <h3>LKPD PBL</h3>
+          <p>Lembar kerja berbasis Problem-Based Learning</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('drill')">
+          <div class="menu-card-icon mc-purple"><i class="fas fa-pencil-alt" style="color:#7c3aed"></i></div>
+          <h3>Drill Soal</h3>
+          <p>Latihan soal pilihan ganda interaktif</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('glosarium')">
+          <div class="menu-card-icon mc-amber"><i class="fas fa-spell-check" style="color:#92400e"></i></div>
+          <h3>Glosarium</h3>
+          <p>Kamus istilah biologi sistem imun</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('rujukan')">
+          <div class="menu-card-icon mc-rose"><i class="fas fa-book" style="color:#9f1239"></i></div>
+          <h3>Daftar Rujukan</h3>
+          <p>Referensi dan sumber materi ilmiah</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('identitas')">
+          <div class="menu-card-icon mc-indigo"><i class="fas fa-id-card" style="color:#3730a3"></i></div>
+          <h3>Identitas Pengembang</h3>
+          <p>Informasi pembuat e-module ini</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('pretest')">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8)"><i class="fas fa-file-alt" style="color:#9d174d"></i></div>
+          <h3>Pre-Test</h3>
+          <p>Tes awal sebelum pembelajaran dimulai</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('angket')">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5)"><i class="fas fa-poll" style="color:#065f46"></i></div>
+          <h3>Angket Ownership</h3>
+          <p>Angket kepemilikan belajar siswa</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('posttest')">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"><i class="fas fa-file-check" style="color:#78350f"></i></div>
+          <h3>Post-Test</h3>
+          <p>Tes akhir setelah pembelajaran selesai</p>
+        </div>
+        <div class="menu-card" onclick="navigateTo('reflektif')">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe)"><i class="fas fa-lightbulb" style="color:#0369a1"></i></div>
+          <h3>Esai Reflektif</h3>
+          <p>Refleksi ownership of learning</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         KOMPETENSI
+    ============================================================ -->
+    <div class="sub-page" id="sp-kompetensi">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-bullseye"></i></div>
+        <div><h2>Kompetensi</h2><p>Capaian dan Tujuan Pembelajaran</p></div>
+      </div>
+
+      <!-- CP -->
+      <div class="card animate-in" style="animation-delay:.05s">
+        <div class="cp-box">
+          <h3><i class="fas fa-star"></i> Capaian Pembelajaran (CP)</h3>
+          <p style="font-size:.93rem;line-height:1.8;color:#166534;">
+            Peserta didik mampu <strong>menganalisis sistem pertahanan tubuh manusia</strong> serta gangguan yang terjadi pada sistem imun, dan mengaitkannya dengan penerapan dalam kehidupan sehari-hari termasuk teknologi vaksin dan penanganan penyakit autoimun.
+          </p>
+        </div>
+      </div>
+
+      <!-- Keterampilan Proses -->
+      <div class="card animate-in" style="animation-delay:.1s">
+        <h3><i class="fas fa-cogs" style="color:var(--accent)"></i> Keterampilan Proses</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px;">
+          <div style="padding:14px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:12px;border-left:4px solid var(--accent);">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🔍</div>
+            <div style="font-size:.88rem;font-weight:800;color:var(--accent-dark);">Mengamati</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Mengidentifikasi komponen dan mekanisme sistem imun dari berbagai sumber</div>
+          </div>
+          <div style="padding:14px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:12px;border-left:4px solid var(--primary);">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🤔</div>
+            <div style="font-size:.88rem;font-weight:800;color:var(--primary-dark);">Menganalisis</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Menganalisis mekanisme pertahanan tubuh nonspesifik dan spesifik</div>
+          </div>
+          <div style="padding:14px;background:linear-gradient(135deg,#fefce8,#fef9c3);border-radius:12px;border-left:4px solid var(--warning);">
+            <div style="font-size:1.4rem;margin-bottom:6px;">💡</div>
+            <div style="font-size:.88rem;font-weight:800;color:#92400e;">Memecahkan Masalah</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Menggunakan konsep imunologi untuk memecahkan kasus kontekstual PBL</div>
+          </div>
+          <div style="padding:14px;background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-radius:12px;border-left:4px solid #a855f7;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🤝</div>
+            <div style="font-size:.88rem;font-weight:800;color:#7c3aed;">Berkolaborasi</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Bekerja sama dalam kelompok untuk menyelesaikan LKPD berbasis PBL</div>
+          </div>
+          <div style="padding:14px;background:linear-gradient(135deg,#fff1f2,#ffe4e6);border-radius:12px;border-left:4px solid #f43f5e;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">📢</div>
+            <div style="font-size:.88rem;font-weight:800;color:#9f1239;">Mengomunikasikan</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Menyajikan hasil penyelidikan dalam bentuk infografis dan forum diskusi</div>
+          </div>
+          <div style="padding:14px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:12px;border-left:4px solid #10b981;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">📊</div>
+            <div style="font-size:.88rem;font-weight:800;color:#065f46;">Mengevaluasi</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px;">Merefleksikan proses dan hasil belajar secara kritis dan mandiri</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TP per pertemuan -->
+      <div class="card animate-in" style="animation-delay:.15s">
+        <h3 style="margin-bottom:16px;"><i class="fas fa-list-check" style="color:var(--primary)"></i> Tujuan Pembelajaran (TP) per Pertemuan</h3>
+
+        <div class="kp-accordion">
+          <div class="kp-accord-head open" onclick="toggleAccord(this)">
+            <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">1</span>
+            <span style="flex:1">Pertemuan 1 – Konsep Dasar Sistem Pertahanan Tubuh</span>
+            <i class="fas fa-chevron-down" style="color:var(--text-muted);transition:transform .2s;font-size:.8rem"></i>
+          </div>
+          <div class="kp-accord-body open">
+            <ul class="tp-list">
+              <li><div class="tp-num">1.1</div><span>Mendeskripsikan pengertian dan fungsi sistem pertahanan tubuh manusia.</span></li>
+              <li><div class="tp-num">1.2</div><span>Mengidentifikasi komponen-komponen sistem imun (sel, organ, dan protein).</span></li>
+              <li><div class="tp-num">1.3</div><span>Menjelaskan tiga lapis pertahanan tubuh secara berurutan.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="kp-accordion">
+          <div class="kp-accord-head" onclick="toggleAccord(this)">
+            <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">2</span>
+            <span style="flex:1">Pertemuan 2 – Pertahanan Tubuh Nonspesifik</span>
+            <i class="fas fa-chevron-down" style="color:var(--text-muted);transition:transform .2s;font-size:.8rem"></i>
+          </div>
+          <div class="kp-accord-body">
+            <ul class="tp-list">
+              <li><div class="tp-num">2.1</div><span>Menganalisis mekanisme pertahanan fisik dan kimia sebagai lini pertama pertahanan.</span></li>
+              <li><div class="tp-num">2.2</div><span>Menjelaskan proses fagositosis dan peran sel-sel fagosit.</span></li>
+              <li><div class="tp-num">2.3</div><span>Menganalisis respons inflamasi, demam, dan peran interferon dalam pertahanan nonspesifik.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="kp-accordion">
+          <div class="kp-accord-head" onclick="toggleAccord(this)">
+            <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">3</span>
+            <span style="flex:1">Pertemuan 3 – Pertahanan Tubuh Spesifik</span>
+            <i class="fas fa-chevron-down" style="color:var(--text-muted);transition:transform .2s;font-size:.8rem"></i>
+          </div>
+          <div class="kp-accord-body">
+            <ul class="tp-list">
+              <li><div class="tp-num">3.1</div><span>Membedakan imunitas humoral dan imunitas seluler beserta komponennya.</span></li>
+              <li><div class="tp-num">3.2</div><span>Menjelaskan peran sel B, sel T, dan antibodi dalam respons imun adaptif.</span></li>
+              <li><div class="tp-num">3.3</div><span>Menganalisis konsep memori imunologis dan penerapannya pada vaksinasi.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="kp-accordion">
+          <div class="kp-accord-head" onclick="toggleAccord(this)">
+            <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">4</span>
+            <span style="flex:1">Pertemuan 4 – Jenis Imunitas & Gangguan Sistem Imun</span>
+            <i class="fas fa-chevron-down" style="color:var(--text-muted);transition:transform .2s;font-size:.8rem"></i>
+          </div>
+          <div class="kp-accord-body">
+            <ul class="tp-list">
+              <li><div class="tp-num">4.1</div><span>Membedakan imunitas aktif dan pasif, alami dan buatan beserta contohnya.</span></li>
+              <li><div class="tp-num">4.2</div><span>Menganalisis berbagai gangguan sistem imun: alergi, autoimun, imunodefisiensi, HIV/AIDS.</span></li>
+              <li><div class="tp-num">4.3</div><span>Mengusulkan cara pencegahan dan penanganan gangguan sistem imun berdasarkan data ilmiah.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="kp-accordion" style="margin-bottom:0">
+          <div class="kp-accord-head" onclick="toggleAccord(this)">
+            <span style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">5</span>
+            <span style="flex:1">Pertemuan 5 – Presentasi & Evaluasi PBL</span>
+            <i class="fas fa-chevron-down" style="color:var(--text-muted);transition:transform .2s;font-size:.8rem"></i>
+          </div>
+          <div class="kp-accord-body">
+            <ul class="tp-list">
+              <li><div class="tp-num">5.1</div><span>Menyajikan hasil penyelidikan dalam bentuk infografis atau karya kreatif lainnya.</span></li>
+              <li><div class="tp-num">5.2</div><span>Mengevaluasi solusi yang ditemukan berdasarkan data dan sumber ilmiah.</span></li>
+              <li><div class="tp-num">5.3</div><span>Merefleksikan proses PBL dan mengidentifikasi area yang perlu ditingkatkan.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alur Pembelajaran -->
+      <div class="card animate-in" style="animation-delay:.2s">
+        <h3 style="margin-bottom:18px;"><i class="fas fa-map-signs" style="color:var(--accent)"></i> Alur Pembelajaran PBL</h3>
+        <div style="display:flex;gap:0;overflow-x:auto;padding-bottom:8px;align-items:flex-start;">
+          <div style="text-align:center;flex:1;min-width:110px;padding:0 8px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:.9rem;">1</div>
+            <div style="font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:4px;">Orientasi<br>Masalah</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Identifikasi kasus kontekstual</div>
+          </div>
+          <div style="flex:0 0 20px;display:flex;align-items:center;justify-content:center;padding-top:24px;color:var(--border);font-size:1.2rem;">→</div>
+          <div style="text-align:center;flex:1;min-width:110px;padding:0 8px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:.9rem;">2</div>
+            <div style="font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:4px;">Organisasi<br>Belajar</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Perencanaan dan pembagian tugas</div>
+          </div>
+          <div style="flex:0 0 20px;display:flex;align-items:center;justify-content:center;padding-top:24px;color:var(--border);font-size:1.2rem;">→</div>
+          <div style="text-align:center;flex:1;min-width:110px;padding:0 8px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:.9rem;">3</div>
+            <div style="font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:4px;">Penyelidikan</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Eksplorasi sumber ilmiah</div>
+          </div>
+          <div style="flex:0 0 20px;display:flex;align-items:center;justify-content:center;padding-top:24px;color:var(--border);font-size:1.2rem;">→</div>
+          <div style="text-align:center;flex:1;min-width:110px;padding:0 8px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:.9rem;">4</div>
+            <div style="font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:4px;">Penyajian<br>Hasil</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Presentasi karya infografis</div>
+          </div>
+          <div style="flex:0 0 20px;display:flex;align-items:center;justify-content:center;padding-top:24px;color:var(--border);font-size:1.2rem;">→</div>
+          <div style="text-align:center;flex:1;min-width:110px;padding:0 8px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 10px;font-size:.9rem;">5</div>
+            <div style="font-size:.8rem;font-weight:800;color:var(--text);margin-bottom:4px;">Evaluasi</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Refleksi dan penilaian diri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         RUANG BELAJAR – DAFTAR SUBMATERI
+    ============================================================ -->
+    <div class="sub-page" id="sp-ruangbelajar">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-book-open"></i></div>
+        <div><h2>Ruang Belajar</h2><p>Pilih submateri – harus dipelajari secara berurutan</p></div>
+      </div>
+
+      <div class="info-box animate-in" style="animation-delay:.05s;margin-bottom:20px;">
+        <strong>📌 Perhatian:</strong> Materi harus dipelajari secara <strong>berurutan</strong>. Kerjakan kuis setiap materi dengan skor ≥ 2/3 untuk membuka materi berikutnya.
+      </div>
+
+      <div class="submateri-grid animate-in" style="animation-delay:.1s">
+
+        <!-- Card 0 -->
+        <div class="submateri-card" id="sm-card-0">
+          <div class="lock-overlay" style="display:none"><i class="fas fa-lock"></i><span>Selesaikan materi sebelumnya</span></div>
+          <div class="sc-icon">🛡️</div>
+          <h3>Sistem Pertahanan Tubuh</h3>
+          <p>Pengenalan sistem imun, komponen, dan perannya dalam melindungi tubuh dari penyakit.</p>
+          <div class="progress-sub"><div class="progress-sub-fill" id="prog-0" style="width:0%"></div></div>
+          <div class="sc-footer">
+            <span class="sc-tag"><i class="fas fa-clock"></i> 15 menit</span>
+            <span class="materi-status open">📖 Tersedia</span>
+          </div>
+        </div>
+
+        <!-- Card 1 -->
+        <div class="submateri-card locked" id="sm-card-1">
+          <div class="lock-overlay"><i class="fas fa-lock"></i><span>Selesaikan kuis Materi 1 (≥2/3) untuk membuka</span></div>
+          <div class="sc-icon">🔰</div>
+          <h3>Pertahanan Tubuh Nonspesifik</h3>
+          <p>Lini pertama pertahanan: kulit, membran mukus, fagositosis, dan respons inflamasi.</p>
+          <div class="progress-sub"><div class="progress-sub-fill" id="prog-1" style="width:0%"></div></div>
+          <div class="sc-footer">
+            <span class="sc-tag"><i class="fas fa-clock"></i> 20 menit</span>
+            <span class="materi-status locked">🔒 Terkunci</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="submateri-card locked" id="sm-card-2">
+          <div class="lock-overlay"><i class="fas fa-lock"></i><span>Selesaikan kuis Materi 2 (≥2/3) untuk membuka</span></div>
+          <div class="sc-icon">🎯</div>
+          <h3>Pertahanan Tubuh Spesifik</h3>
+          <p>Respons imun adaptif: limfosit T, limfosit B, antibodi, dan memori imunologis.</p>
+          <div class="progress-sub"><div class="progress-sub-fill" id="prog-2" style="width:0%"></div></div>
+          <div class="sc-footer">
+            <span class="sc-tag"><i class="fas fa-clock"></i> 25 menit</span>
+            <span class="materi-status locked">🔒 Terkunci</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="submateri-card locked" id="sm-card-3">
+          <div class="lock-overlay"><i class="fas fa-lock"></i><span>Selesaikan kuis Materi 3 (≥2/3) untuk membuka</span></div>
+          <div class="sc-icon">💉</div>
+          <h3>Jenis Imunitas</h3>
+          <p>Perbedaan imunitas aktif dan pasif, alami dan buatan, serta aplikasinya.</p>
+          <div class="progress-sub"><div class="progress-sub-fill" id="prog-3" style="width:0%"></div></div>
+          <div class="sc-footer">
+            <span class="sc-tag"><i class="fas fa-clock"></i> 15 menit</span>
+            <span class="materi-status locked">🔒 Terkunci</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="submateri-card locked" id="sm-card-4">
+          <div class="lock-overlay"><i class="fas fa-lock"></i><span>Selesaikan kuis Materi 4 (≥2/3) untuk membuka</span></div>
+          <div class="sc-icon">🦠</div>
+          <h3>Gangguan Sistem Pertahanan Tubuh</h3>
+          <p>Alergi, autoimun, imunodefisiensi, HIV/AIDS, dan cara pencegahannya.</p>
+          <div class="progress-sub"><div class="progress-sub-fill" id="prog-4" style="width:0%"></div></div>
+          <div class="sc-footer">
+            <span class="sc-tag"><i class="fas fa-clock"></i> 20 menit</span>
+            <span class="materi-status locked">🔒 Terkunci</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================
+         MATERI DETAIL
+    ============================================================ -->
+    <div class="sub-page" id="sp-materi">
+      <div class="materi-nav animate-in">
+        <button class="btn-back" onclick="backToRuangBelajar()"><i class="fas fa-arrow-left"></i> Kembali</button>
+        <div class="materi-breadcrumb">Ruang Belajar → <span id="mb-title">Materi</span></div>
+      </div>
+
+      <div class="flipbook-hint animate-in">
+        <i class="fas fa-book-reader" style="font-size:1.2rem"></i>
+        <span>Baca seluruh materi sampai selesai, lalu kerjakan kuis di bawah untuk membuka materi berikutnya.</span>
+      </div>
+
+      <div class="materi-content-box animate-in" id="materi-content-box">
+        <!-- Konten materi dimuat secara dinamis oleh script.js -->
+      </div>
+
+      <!-- Kuis Sidebar -->
+      <div class="kuis-box animate-in" style="animation-delay:.2s">
+        <div class="kuis-header">
+          <div class="kh-icon">📝</div>
+          <div>
+            <h3>Kuis Submateri</h3>
+            <p style="font-size:.82rem;color:var(--text-muted);">Jawab 3 soal berikut untuk menguji pemahaman Anda</p>
+            <span class="kuis-min-score">⚠️ Minimal skor 2/3 untuk membuka materi berikutnya</span>
+          </div>
+        </div>
+
+        <div id="kuis-questions"></div>
+        <div id="kuis-score" style="display:none"></div>
+
+        <div class="kuis-unlock-msg" id="kuis-unlock-msg">
+          🎉 <strong>Selamat!</strong> Kamu lulus kuis ini. Materi berikutnya sudah terbuka!
+        </div>
+        <div class="kuis-locked-msg" id="kuis-locked-msg">
+          ❌ Skor belum memenuhi minimum. Pelajari kembali materi dan coba lagi.
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:18px;" id="kuis-actions">
+          <button class="btn-primary" onclick="submitKuis()"><i class="fas fa-check"></i> Cek Jawaban</button>
+          <button class="btn-secondary" onclick="resetKuis()"><i class="fas fa-redo"></i> Ulangi</button>
+        </div>
+
+        <!-- Navigasi materi prev/next -->
+        <div class="materi-nav-btns" id="materi-nav-btns" style="display:none">
+          <button class="btn-secondary" id="btn-prev-materi" onclick="prevMateri()"><i class="fas fa-arrow-left"></i> Materi Sebelumnya</button>
+          <button class="btn-primary"   id="btn-next-materi" onclick="nextMateri()">Materi Berikutnya <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         LKPD – PILIH KELOMPOK
+    ============================================================ -->
+    <div class="sub-page" id="sp-lkpd">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-tasks"></i></div>
+        <div><h2>LKPD Berbasis PBL</h2><p>Lembar Kerja Peserta Didik – Problem-Based Learning</p></div>
+      </div>
+      <div class="info-box animate-in" style="margin-bottom:20px;animation-delay:.05s">
+        <strong>📌 Petunjuk:</strong> Pilih kelompok kamu, lalu selesaikan setiap tahap secara <strong>berurutan</strong>. Setiap tahap terkunci hingga tahap sebelumnya diselesaikan.
+      </div>
+      <!-- 6 Kelompok Card -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;" class="animate-in" style="animation-delay:.1s" id="lkpd-group-grid">
+        <div class="menu-card" onclick="openLKPDGroup(1)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 1</h3>
+          <p>Klik untuk membuka LKPD Kelompok 1</p>
+          <div id="grp-status-1" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+        <div class="menu-card" onclick="openLKPDGroup(2)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 2</h3>
+          <p>Klik untuk membuka LKPD Kelompok 2</p>
+          <div id="grp-status-2" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+        <div class="menu-card" onclick="openLKPDGroup(3)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 3</h3>
+          <p>Klik untuk membuka LKPD Kelompok 3</p>
+          <div id="grp-status-3" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+        <div class="menu-card" onclick="openLKPDGroup(4)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#f3e8ff,#e9d5ff);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 4</h3>
+          <p>Klik untuk membuka LKPD Kelompok 4</p>
+          <div id="grp-status-4" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+        <div class="menu-card" onclick="openLKPDGroup(5)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#ffe4e6,#fecdd3);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 5</h3>
+          <p>Klik untuk membuka LKPD Kelompok 5</p>
+          <div id="grp-status-5" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+        <div class="menu-card" onclick="openLKPDGroup(6)">
+          <div class="menu-card-icon" style="background:linear-gradient(135deg,#ccfbf1,#99f6e4);font-size:1.6rem;display:flex;align-items:center;justify-content:center;">👥</div>
+          <h3>Kelompok 6</h3>
+          <p>Klik untuk membuka LKPD Kelompok 6</p>
+          <div id="grp-status-6" style="margin-top:8px;font-size:.78rem;font-weight:700;color:var(--text-muted);">Belum dimulai</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         LKPD DETAIL – TAHAPAN PBL PER KELOMPOK
+    ============================================================ -->
+    <div class="sub-page" id="sp-lkpd-detail">
+      <div class="materi-nav animate-in">
+        <button class="btn-back" onclick="navigateTo('lkpd');refreshGroupStatus()"><i class="fas fa-arrow-left"></i> Kembali ke Pilih Kelompok</button>
+        <div class="materi-breadcrumb">LKPD → <span id="lkpd-group-label">Kelompok 1</span></div>
+      </div>
+
+      <!-- Identitas Kelompok -->
+      <div class="card animate-in" style="margin-bottom:18px;">
+        <h3 style="margin-bottom:14px;color:var(--primary-dark);"><i class="fas fa-users" style="color:var(--accent)"></i> Identitas Kelompok</h3>
+        <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:12px;">Tuliskan identitas anggota kelompok kalian!</p>
+        <div style="border:2px solid var(--border);border-radius:14px;padding:20px;background:var(--bg);">
+          <div style="font-weight:800;font-size:.92rem;color:var(--primary-dark);margin-bottom:14px;padding:6px 14px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-radius:8px;display:inline-block;" id="lkpd-kelompok-title">Kelompok:</div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px;">
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:800;color:var(--text-muted);min-width:20px;">1.</span><input type="text" class="lkpd-member-inp" placeholder="Nama anggota 1" style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:Nunito,sans-serif;font-size:.9rem;outline:none;" onfocus="this.style.borderColor='var(--primary-light)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:800;color:var(--text-muted);min-width:20px;">2.</span><input type="text" class="lkpd-member-inp" placeholder="Nama anggota 2" style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:Nunito,sans-serif;font-size:.9rem;outline:none;" onfocus="this.style.borderColor='var(--primary-light)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:800;color:var(--text-muted);min-width:20px;">3.</span><input type="text" class="lkpd-member-inp" placeholder="Nama anggota 3" style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:Nunito,sans-serif;font-size:.9rem;outline:none;" onfocus="this.style.borderColor='var(--primary-light)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:800;color:var(--text-muted);min-width:20px;">4.</span><input type="text" class="lkpd-member-inp" placeholder="Nama anggota 4" style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:Nunito,sans-serif;font-size:.9rem;outline:none;" onfocus="this.style.borderColor='var(--primary-light)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:800;color:var(--text-muted);min-width:20px;">5.</span><input type="text" class="lkpd-member-inp" placeholder="Nama anggota 5" style="flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:Nunito,sans-serif;font-size:.9rem;outline:none;" onfocus="this.style.borderColor='var(--primary-light)'" onblur="this.style.borderColor='var(--border)'"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout: Sidebar Tahap + Konten -->
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:20px;" id="lkpd-detail-layout">
+        <div>
+          <div class="pbl-stages" id="pbl-stages-detail">
+            <div class="pbl-stage-tab active" data-stage="0" onclick="openPBLDetail(0)">
+              <div class="pbl-stage-num">1</div>
+              <div><div class="pbl-stage-title">Orientasi Masalah</div><div class="pbl-stage-sub">Identifikasi kasus</div></div>
+              <span class="pbl-stage-badge">📝</span>
+            </div>
+            <div class="pbl-stage-tab pbl-locked" data-stage="1" onclick="openPBLDetail(1)">
+              <div class="pbl-stage-num">2</div>
+              <div><div class="pbl-stage-title">Organisasi Belajar</div><div class="pbl-stage-sub">Rangkuman konsep</div></div>
+              <span class="pbl-stage-badge">🔒</span>
+            </div>
+            <div class="pbl-stage-tab pbl-locked" data-stage="2" onclick="openPBLDetail(2)">
+              <div class="pbl-stage-num">3</div>
+              <div><div class="pbl-stage-title">Penyelidikan</div><div class="pbl-stage-sub">Eksplorasi data</div></div>
+              <span class="pbl-stage-badge">🔒</span>
+            </div>
+            <div class="pbl-stage-tab pbl-locked" data-stage="3" onclick="openPBLDetail(3)">
+              <div class="pbl-stage-num">4</div>
+              <div><div class="pbl-stage-title">Penyajian Hasil</div><div class="pbl-stage-sub">Gagasan solusi</div></div>
+              <span class="pbl-stage-badge">🔒</span>
+            </div>
+            <div class="pbl-stage-tab pbl-locked" data-stage="4" onclick="openPBLDetail(4)">
+              <div class="pbl-stage-num">5</div>
+              <div><div class="pbl-stage-title">Evaluasi</div><div class="pbl-stage-sub">Analisis & refleksi</div></div>
+              <span class="pbl-stage-badge">🔒</span>
+            </div>
+          </div>
+        </div>
+        <div id="pbl-detail-content-area"></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         DRILL SOAL
+    ============================================================ -->
+    <div class="sub-page" id="sp-drill">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-pencil-alt"></i></div>
+        <div><h2>Drill Soal</h2><p>Latihan soal pilihan ganda untuk menguatkan pemahaman</p></div>
+      </div>
+
+      <!-- Setup -->
+      <div id="drill-setup-area" class="animate-in">
+        <div class="card" style="max-width:500px">
+          <h3><i class="fas fa-sliders-h" style="color:var(--primary)"></i> Pengaturan Latihan</h3>
+          <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:20px;">Pilih jumlah soal yang ingin dikerjakan (minimal 5, maksimal 15)</p>
+          <div class="num-selector" style="margin-bottom:20px">
+            <button class="num-btn" onclick="changeDrillNum(-1)"><i class="fas fa-minus"></i></button>
+            <div class="num-display" id="drill-num-display">5</div>
+            <button class="num-btn" onclick="changeDrillNum(1)"><i class="fas fa-plus"></i></button>
+            <span style="font-size:.9rem;font-weight:700;color:var(--text-muted);margin-left:8px">soal</span>
+          </div>
+          <div class="info-box" style="margin-bottom:18px;font-size:.85rem">
+            <strong>📌 Info:</strong> Soal akan dipilih secara acak dari bank 15 soal. Pembahasan lengkap ditampilkan setelah selesai.
+          </div>
+          <button class="btn-primary" style="width:100%" onclick="startDrill()"><i class="fas fa-play"></i> Mulai Latihan</button>
+        </div>
+      </div>
+
+      <!-- Quiz Area -->
+      <div id="drill-quiz-area" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-size:.92rem;font-weight:700;color:var(--text-muted);">
+            Soal <span id="drill-cur">1</span> dari <span id="drill-tot">5</span>
+          </span>
+          <button class="btn-back" onclick="endDrill()"><i class="fas fa-times"></i> Keluar</button>
+        </div>
+        <div class="drill-progress-bar">
+          <div class="drill-progress-fill" id="drill-prog" style="width:0%"></div>
+        </div>
+        <div id="drill-question-box" class="card" style="margin-bottom:16px"></div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn-primary" onclick="nextDrill()" id="drill-next-btn">Soal Berikutnya →</button>
+        </div>
+      </div>
+
+      <!-- Result Area -->
+      <div id="drill-result-area" style="display:none" class="animate-in">
+        <div class="card" style="max-width:560px">
+          <div class="score-box">
+            <div style="font-size:3rem;margin-bottom:10px">🎉</div>
+            <div class="score-val" id="drill-final-score">0/5</div>
+            <div class="score-label">Skor Akhir Drill Soal</div>
+            <div style="margin-top:10px;font-size:.88rem;color:var(--text-muted);" id="drill-result-msg"></div>
+          </div>
+          <div id="drill-pembahasan" style="margin-top:20px"></div>
+          <button class="btn-secondary" style="width:100%;margin-top:16px" onclick="resetDrill()">
+            <i class="fas fa-redo"></i> Coba Lagi
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         GLOSARIUM
+    ============================================================ -->
+    <div class="sub-page" id="sp-glosarium">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-spell-check"></i></div>
+        <div><h2>Glosarium</h2><p>Kamus istilah sistem pertahanan tubuh – urut alfabet</p></div>
+      </div>
+      <div class="card animate-in">
+        <div class="glos-search">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Cari istilah..." id="glos-search-inp" oninput="filterGlosarium()">
+        </div>
+        <div class="alpha-filter" id="alpha-filter"></div>
+        <div id="glos-list"></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         DAFTAR RUJUKAN
+    ============================================================ -->
+    <div class="sub-page" id="sp-rujukan">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-book"></i></div>
+        <div><h2>Daftar Rujukan</h2><p>Sumber referensi ilmiah terpercaya</p></div>
+      </div>
+      <div id="rujukan-list" class="animate-in"></div>
+    </div>
+
+    <!-- ============================================================
+         IDENTITAS PENGEMBANG
+    ============================================================ -->
+    <div class="sub-page" id="sp-identitas">
+      <div class="section-header animate-in">
+        <div class="section-header-icon"><i class="fas fa-id-card"></i></div>
+        <div><h2>Identitas Pengembang</h2><p>Informasi tentang pembuat e-module ini</p></div>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="dev-profile animate-in">
+        <div class="dev-avatar">👩‍💻</div>
+        <div class="dev-name">Rizkha Nur Fitriani</div>
+        <div class="dev-title">Pengembang E-Module Biologi | Pendidikan Biologi</div>
+      </div>
+
+      <!-- Info Grid -->
+      <div class="dev-info-grid animate-in" style="animation-delay:.1s">
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-user"></i></div>
+          <div>
+            <div class="dic-label">Nama Lengkap</div>
+            <div class="dic-val">Rizkha Nur Fitriani</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div>
+            <div class="dic-label">Bidang Studi</div>
+            <div class="dic-val">Pendidikan Biologi</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-school"></i></div>
+          <div>
+            <div class="dic-label">Mata Pelajaran</div>
+            <div class="dic-val">Biologi SMA Kelas XI</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-lightbulb"></i></div>
+          <div>
+            <div class="dic-label">Pendekatan Pembelajaran</div>
+            <div class="dic-val">Problem-Based Learning (PBL)</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-dna"></i></div>
+          <div>
+            <div class="dic-label">Topik E-Module</div>
+            <div class="dic-val">Sistem Pertahanan Tubuh Manusia</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-code"></i></div>
+          <div>
+            <div class="dic-label">Teknologi</div>
+            <div class="dic-val">HTML5 · CSS3 · JavaScript</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-book-open"></i></div>
+          <div>
+            <div class="dic-label">Kurikulum</div>
+            <div class="dic-val">Kurikulum Merdeka</div>
+          </div>
+        </div>
+        <div class="dev-info-card">
+          <div class="dic-icon"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <div class="dic-label">Tahun Pengembangan</div>
+            <div class="dic-val">2024 / 2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deskripsi -->
+      <div class="card animate-in" style="animation-delay:.2s;margin-top:20px">
+        <h3><i class="fas fa-info-circle" style="color:var(--accent)"></i> Deskripsi E-Module</h3>
+        <p style="font-size:.93rem;line-height:1.9;color:var(--text);margin-top:14px;">
+          E-module ini dikembangkan sebagai media pembelajaran digital berbasis website untuk mata pelajaran Biologi tingkat SMA kelas XI. Materi yang dikembangkan adalah <strong>Sistem Pertahanan Tubuh Manusia</strong> dengan pendekatan <strong>Problem-Based Learning (PBL)</strong> yang mendorong siswa untuk berpikir kritis, memecahkan masalah nyata, dan berkolaborasi dalam kelompok.
+        </p>
+        <p style="font-size:.93rem;line-height:1.9;color:var(--text);margin-top:10px;">
+          Website ini dirancang dengan tampilan modern, responsif, dan ramah pengguna dengan warna tema hijau dan biru yang mencerminkan kesan ilmiah dan segar. Fitur lengkap mencakup Ruang Belajar bertahap dengan sistem kunci progresif, LKPD PBL 5 tahap berurutan, Drill Soal interaktif, Glosarium, Forum Diskusi, serta Sistem Gamifikasi berbasis XP dan lencana.
+        </p>
+        <p style="font-size:.93rem;line-height:1.9;color:var(--text);margin-top:10px;">
+          Sistem navigasi bersifat <strong>linear</strong> – siswa tidak dapat melompat ke materi berikutnya sebelum menyelesaikan kuis materi sebelumnya dengan skor minimal yang ditentukan. Hal ini memastikan pemahaman yang terbangun secara bertahap dan sistematis.
+        </p>
+      </div>
+
+      <!-- Visi Misi -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0" class="animate-in" style="animation-delay:.25s">
+        <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;">
+          <h3 style="color:#15803d;"><i class="fas fa-eye"></i> Visi</h3>
+          <p style="font-size:.9rem;line-height:1.7;color:#166534;margin-top:10px;">Mewujudkan pembelajaran biologi yang interaktif, bermakna, dan menyenangkan bagi peserta didik SMA melalui pemanfaatan teknologi digital yang inovatif.</p>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #93c5fd;">
+          <h3 style="color:#1d4ed8;"><i class="fas fa-rocket"></i> Misi</h3>
+          <p style="font-size:.9rem;line-height:1.7;color:#1e40af;margin-top:10px;">Mengembangkan e-module berbasis PBL yang mendorong keterampilan berpikir tingkat tinggi (HOTS), kolaborasi, dan literasi digital pada peserta didik.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         PRE-TEST
+    ============================================================ -->
+    <div class="sub-page" id="sp-pretest">
+      <div class="section-header animate-in">
+        <div class="section-header-icon" style="background:linear-gradient(135deg,#9d174d,#be185d);"><i class="fas fa-file-alt"></i></div>
+        <div><h2>Pre-Test</h2><p>Tes awal sebelum pembelajaran – jawab semua soal esai</p></div>
+      </div>
+      <div class="info-box animate-in" style="margin-bottom:20px;">
+        <strong>📌 Petunjuk:</strong> Jawablah setiap pertanyaan di bawah ini dengan kalimat lengkap sesuai pemahaman awal kamu. Pre-test tidak dinilai benar/salah, tetapi wajib diisi semua.
+      </div>
+      <div id="pretest-form" class="animate-in">
+        <!-- Soal 1 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--primary);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">1</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Menurut pemahaman awal kamu, apa yang dimaksud dengan sistem pertahanan tubuh (sistem imun)? Jelaskan dengan kata-katamu sendiri!</p>
+          </div>
+          <textarea class="textarea-field" id="pre-q1" placeholder="Tuliskan jawabanmu di sini..." style="min-height:110px;"></textarea>
+        </div>
+        <!-- Soal 2 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">2</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Apa yang kamu ketahui tentang perbedaan pertahanan tubuh nonspesifik dan spesifik? Berikan masing-masing satu contoh!</p>
+          </div>
+          <textarea class="textarea-field" id="pre-q2" placeholder="Tuliskan jawabanmu di sini..." style="min-height:110px;"></textarea>
+        </div>
+        <!-- Soal 3 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--warning);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">3</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Mengapa tubuh seseorang yang pernah terkena penyakit tertentu (misalnya cacar air) biasanya tidak akan terkena penyakit yang sama lagi? Jelaskan dugaanmu!</p>
+          </div>
+          <textarea class="textarea-field" id="pre-q3" placeholder="Tuliskan jawabanmu di sini..." style="min-height:110px;"></textarea>
+        </div>
+        <!-- Soal 4 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--success);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">4</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Apa yang kamu ketahui tentang vaksin? Bagaimana menurutmu cara kerja vaksin dalam melindungi tubuh dari penyakit?</p>
+          </div>
+          <textarea class="textarea-field" id="pre-q4" placeholder="Tuliskan jawabanmu di sini..." style="min-height:110px;"></textarea>
+        </div>
+        <!-- Soal 5 -->
+        <div class="card" style="margin-bottom:20px;border-left:4px solid #a855f7;">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">5</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Sebutkan dan jelaskan minimal dua gangguan atau penyakit yang berhubungan dengan sistem pertahanan tubuh yang kamu ketahui!</p>
+          </div>
+          <textarea class="textarea-field" id="pre-q5" placeholder="Tuliskan jawabanmu di sini..." style="min-height:110px;"></textarea>
+        </div>
+        <div id="pretest-submitted-msg" style="display:none;" class="score-box" style="text-align:center;">
+          <div style="font-size:2.5rem;margin-bottom:10px;">✅</div>
+          <div style="font-size:1.2rem;font-weight:800;color:var(--primary-dark);">Pre-Test Berhasil Dikumpulkan!</div>
+          <div style="font-size:.9rem;color:var(--text-muted);margin-top:6px;">Terima kasih telah mengerjakan pre-test. Selamat belajar!</div>
+        </div>
+        <button class="btn-primary" id="pretest-submit-btn" onclick="submitTest('pretest')" style="width:100%;max-width:400px;display:block;">
+          <i class="fas fa-paper-plane"></i> Kumpulkan Pre-Test
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ANGKET OWNERSHIP OF LEARNING
+    ============================================================ -->
+    <div class="sub-page" id="sp-angket">
+      <div class="section-header animate-in">
+        <div class="section-header-icon" style="background:linear-gradient(135deg,#065f46,#059669);"><i class="fas fa-poll"></i></div>
+        <div><h2>Angket Ownership of Learning</h2><p>Ukur tingkat kepemilikan belajar kamu</p></div>
+      </div>
+      <div class="info-box animate-in" style="margin-bottom:20px;">
+        <strong>📌 Petunjuk:</strong> Pilih jawaban yang paling sesuai dengan kondisi kamu saat ini. Tidak ada jawaban benar atau salah — isilah dengan jujur sesuai keadaanmu yang sebenarnya.
+      </div>
+      <div class="card animate-in">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--border);">
+          <div style="font-size:1.5rem;">📊</div>
+          <div>
+            <div style="font-weight:800;color:var(--primary-dark);">Skala Penilaian</div>
+            <div style="font-size:.82rem;color:var(--text-muted);">1 = Sangat Tidak Setuju &nbsp;|&nbsp; 2 = Tidak Setuju &nbsp;|&nbsp; 3 = Netral &nbsp;|&nbsp; 4 = Setuju &nbsp;|&nbsp; 5 = Sangat Setuju</div>
+          </div>
+        </div>
+        <div id="angket-questions">
+          <!-- Pernyataan 1-15 dirender JS -->
+        </div>
+        <div id="angket-result" style="display:none;margin-top:20px;" class="score-box">
+          <div style="font-size:2.5rem;margin-bottom:10px;">📊</div>
+          <div class="score-val" id="angket-score-val">–</div>
+          <div class="score-label">Skor Ownership of Learning</div>
+          <div style="margin-top:12px;font-size:.9rem;color:var(--text-muted);" id="angket-result-msg"></div>
+        </div>
+        <button class="btn-primary" id="angket-submit-btn" onclick="submitAngket()" style="width:100%;max-width:400px;margin-top:20px;display:block;">
+          <i class="fas fa-check-circle"></i> Kirim Angket
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         POST-TEST
+    ============================================================ -->
+    <div class="sub-page" id="sp-posttest">
+      <div class="section-header animate-in">
+        <div class="section-header-icon" style="background:linear-gradient(135deg,#78350f,#b45309);"><i class="fas fa-file-check"></i></div>
+        <div><h2>Post-Test</h2><p>Tes akhir setelah menyelesaikan seluruh pembelajaran</p></div>
+      </div>
+      <div class="info-box animate-in" style="margin-bottom:20px;">
+        <strong>📌 Petunjuk:</strong> Jawablah setiap pertanyaan di bawah ini dengan lengkap dan terstruktur. Post-test mengukur pemahaman kamu setelah mempelajari seluruh materi sistem pertahanan tubuh.
+      </div>
+      <div id="posttest-form" class="animate-in">
+        <!-- Soal 1 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--primary);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">1</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Jelaskan secara lengkap mekanisme sistem pertahanan tubuh nonspesifik dan spesifik beserta komponen-komponen yang terlibat di dalamnya!</p>
+          </div>
+          <textarea class="textarea-field" id="post-q1" placeholder="Tuliskan jawabanmu di sini..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Soal 2 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">2</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Analisis bagaimana bakteri <em>Leptospira</em> yang masuk melalui kulit lecet dapat dilawan oleh sistem pertahanan tubuh. Kaitkan dengan mekanisme fagositosis, respons inflamasi, dan respons imun adaptif!</p>
+          </div>
+          <textarea class="textarea-field" id="post-q2" placeholder="Tuliskan jawabanmu di sini..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Soal 3 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--warning);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">3</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Bedakan imunitas aktif alami, aktif buatan, pasif alami, dan pasif buatan. Berikan masing-masing dua contoh nyata dalam kehidupan sehari-hari!</p>
+          </div>
+          <textarea class="textarea-field" id="post-q3" placeholder="Tuliskan jawabanmu di sini..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Soal 4 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--success);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">4</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Jelaskan mekanisme terjadinya penyakit alergi dan penyakit autoimun. Mengapa keduanya dianggap sebagai disfungsi sistem imun? Apa perbedaan mendasar keduanya?</p>
+          </div>
+          <textarea class="textarea-field" id="post-q4" placeholder="Tuliskan jawabanmu di sini..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Soal 5 -->
+        <div class="card" style="margin-bottom:20px;border-left:4px solid #a855f7;">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">5</div>
+            <p style="font-size:.95rem;font-weight:700;color:var(--text);line-height:1.6;">Berdasarkan materi yang telah dipelajari, bagaimana cara menjaga sistem imun agar tetap optimal? Hubungkan dengan kondisi masyarakat Indonesia saat musim hujan seperti pada kasus leptospirosis!</p>
+          </div>
+          <textarea class="textarea-field" id="post-q5" placeholder="Tuliskan jawabanmu di sini..." style="min-height:130px;"></textarea>
+        </div>
+        <div id="posttest-submitted-msg" style="display:none;" class="score-box">
+          <div style="font-size:2.5rem;margin-bottom:10px;">🎓</div>
+          <div style="font-size:1.2rem;font-weight:800;color:var(--primary-dark);">Post-Test Berhasil Dikumpulkan!</div>
+          <div style="font-size:.9rem;color:var(--text-muted);margin-top:6px;">Terima kasih telah menyelesaikan seluruh pembelajaran BioImun!</div>
+        </div>
+        <button class="btn-primary" id="posttest-submit-btn" onclick="submitTest('posttest')" style="width:100%;max-width:400px;display:block;">
+          <i class="fas fa-paper-plane"></i> Kumpulkan Post-Test
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ESAI REFLEKTIF OWNERSHIP OF LEARNING
+    ============================================================ -->
+    <div class="sub-page" id="sp-reflektif">
+      <div class="section-header animate-in">
+        <div class="section-header-icon" style="background:linear-gradient(135deg,#0369a1,#0284c7);"><i class="fas fa-lightbulb"></i></div>
+        <div><h2>Esai Reflektif</h2><p>Ownership of Learning – Refleksi Diri Setelah Pembelajaran</p></div>
+      </div>
+      <div class="info-box animate-in" style="margin-bottom:20px;">
+        <strong>📌 Petunjuk:</strong> Tuliskan esai reflektif berdasarkan pengalaman belajarmu. Jawablah dengan jujur, mendalam, dan menggunakan kalimat lengkap. Tidak ada jawaban yang salah — ini tentang pengalaman pribadimu.
+      </div>
+      <div id="reflektif-form" class="animate-in">
+        <!-- Esai 1 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--primary);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">1</div>
+            <div>
+              <p style="font-size:.95rem;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">Tanggung Jawab Belajar</p>
+              <p style="font-size:.9rem;color:var(--text);line-height:1.6;">Sejauh mana kamu merasa bertanggung jawab atas proses belajarmu sendiri selama mengikuti e-module ini? Ceritakan bentuk tanggung jawab yang kamu tunjukkan (misalnya: mengerjakan kuis secara mandiri, membaca materi dengan sungguh-sungguh, dll.)!</p>
+            </div>
+          </div>
+          <textarea class="textarea-field" id="ref-q1" placeholder="Tuliskan esai reflektifmu di sini (minimal 3 kalimat)..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Esai 2 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">2</div>
+            <div>
+              <p style="font-size:.95rem;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">Motivasi & Keterlibatan Diri</p>
+              <p style="font-size:.9rem;color:var(--text);line-height:1.6;">Apa yang mendorongmu untuk terus belajar dan menyelesaikan setiap tahapan dalam e-module ini? Apakah kamu merasa terlibat aktif dalam proses pembelajaran? Jelaskan!</p>
+            </div>
+          </div>
+          <textarea class="textarea-field" id="ref-q2" placeholder="Tuliskan esai reflektifmu di sini (minimal 3 kalimat)..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Esai 3 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--warning);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">3</div>
+            <div>
+              <p style="font-size:.95rem;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">Perkembangan Pemahaman</p>
+              <p style="font-size:.9rem;color:var(--text);line-height:1.6;">Bagaimana pemahaman kamu tentang sistem pertahanan tubuh berkembang setelah menggunakan e-module ini? Bandingkan pengetahuanmu sebelum dan sesudah pembelajaran. Konsep mana yang paling berkesan bagimu?</p>
+            </div>
+          </div>
+          <textarea class="textarea-field" id="ref-q3" placeholder="Tuliskan esai reflektifmu di sini (minimal 3 kalimat)..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Esai 4 -->
+        <div class="card" style="margin-bottom:16px;border-left:4px solid var(--success);">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">4</div>
+            <div>
+              <p style="font-size:.95rem;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">Tantangan & Strategi Mengatasi</p>
+              <p style="font-size:.9rem;color:var(--text);line-height:1.6;">Apa kesulitan atau tantangan terbesar yang kamu hadapi selama belajar menggunakan e-module ini? Bagaimana strategi yang kamu gunakan untuk mengatasinya? Apa yang akan kamu lakukan berbeda jika mengulang pembelajaran ini?</p>
+            </div>
+          </div>
+          <textarea class="textarea-field" id="ref-q4" placeholder="Tuliskan esai reflektifmu di sini (minimal 3 kalimat)..." style="min-height:130px;"></textarea>
+        </div>
+        <!-- Esai 5 -->
+        <div class="card" style="margin-bottom:20px;border-left:4px solid #a855f7;">
+          <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">5</div>
+            <div>
+              <p style="font-size:.95rem;font-weight:800;color:var(--primary-dark);margin-bottom:4px;">Penerapan dalam Kehidupan Nyata</p>
+              <p style="font-size:.9rem;color:var(--text);line-height:1.6;">Bagaimana pengetahuan tentang sistem pertahanan tubuh yang kamu pelajari dapat diterapkan dalam kehidupan sehari-hari? Berikan contoh konkret perubahan perilaku atau keputusan yang akan kamu ambil berdasarkan apa yang telah dipelajari!</p>
+            </div>
+          </div>
+          <textarea class="textarea-field" id="ref-q5" placeholder="Tuliskan esai reflektifmu di sini (minimal 3 kalimat)..." style="min-height:130px;"></textarea>
+        </div>
+        <div id="reflektif-submitted-msg" style="display:none;" class="score-box">
+          <div style="font-size:2.5rem;margin-bottom:10px;">💡</div>
+          <div style="font-size:1.2rem;font-weight:800;color:var(--primary-dark);">Esai Reflektif Berhasil Dikumpulkan!</div>
+          <div style="font-size:.9rem;color:var(--text-muted);margin-top:6px;">Refleksimu sangat berharga untuk perkembangan pembelajaran ke depan. Terima kasih!</div>
+        </div>
+        <button class="btn-primary" id="reflektif-submit-btn" onclick="submitTest('reflektif')" style="width:100%;max-width:400px;display:block;">
+          <i class="fas fa-paper-plane"></i> Kumpulkan Esai Reflektif
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end content-area -->
+</div><!-- end main-content -->
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Modal</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<script src="sync.js"></script>
+<script src="script.js"></script>
+<script>
+/* ============================================================
+   DASHBOARD PATCH SCRIPT
+   Extends script.js with new pages, LKPD groups, tests, angket
+   ============================================================ */
+
+/* ── Extend PAGE_MAP with new pages ── */
+const EXTRA_PAGES = {
+  'lkpd-detail':'sp-lkpd-detail',
+  pretest:'sp-pretest', angket:'sp-angket',
+  posttest:'sp-posttest', reflektif:'sp-reflektif'
+};
+const _origNavigateTo = navigateTo;
+navigateTo = function(pg) {
+  if (EXTRA_PAGES[pg]) {
+    document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById(EXTRA_PAGES[pg])?.classList.add('active');
+    const titles = {
+      'lkpd-detail':'📋 LKPD – Detail Kelompok',
+      pretest:'📝 Pre-Test', angket:'📊 Angket Ownership',
+      posttest:'📋 Post-Test', reflektif:'💡 Esai Reflektif'
+    };
+    const titleEl = document.getElementById('topbar-title');
+    if (titleEl) titleEl.textContent = titles[pg] || pg;
+    window.scrollTo(0,0);
+    closeSidebarMobile();
+    if (pg === 'angket') initAngket();
+    if (pg === 'pretest')  restoreTest('pretest');
+    if (pg === 'posttest') restoreTest('posttest');
+    if (pg === 'reflektif') restoreTest('reflektif');
+  } else {
+    _origNavigateTo(pg);
+  }
+};
+
+/* ── Sidebar toggle: hamburger stays hamburger ── */
+const _origToggle = toggleSidebar;
+toggleSidebar = function() {
+  _origToggle();
+  // icon stays as fa-bars; no chevron swap needed
+};
+
+/* ── Progress label patch ── */
+const _origUpdate = updateGlobalProgress;
+updateGlobalProgress = function() {
+  _origUpdate();
+  for (let i = 0; i < 5; i++) {
+    const bar = document.getElementById('prog-track-' + i);
+    const lbl = document.getElementById('ptl-' + i);
+    if (bar && lbl) lbl.textContent = bar.style.width;
+  }
+};
+
+/* ── Materi nav buttons patch ── */
+function prevMateri() {
+  if (currentMateri > 0) openMateri(currentMateri - 1);
+}
+function nextMateri() {
+  const next = currentMateri + 1;
+  if (next < 5 && materiUnlocked(next)) openMateri(next);
+  else if (next >= 5) { showToast('🎉 Semua materi selesai!', 'success'); navigateTo('ruangbelajar'); }
+  else showToast('🔒 Selesaikan kuis dulu untuk membuka materi berikutnya.', 'error');
+}
+
+const _origSubmitKuis = submitKuis;
+submitKuis = function() {
+  _origSubmitKuis();
+  const nb = document.getElementById('materi-nav-btns');
+  if (nb) {
+    nb.style.display = 'flex';
+    const prev = document.getElementById('btn-prev-materi');
+    const next = document.getElementById('btn-next-materi');
+    if (prev) prev.style.display = currentMateri === 0 ? 'none' : 'inline-flex';
+    if (next) next.style.display = currentMateri === 4 ? 'none' : 'inline-flex';
+  }
+};
+const _origResetKuis = resetKuis;
+resetKuis = function() {
+  _origResetKuis();
+  const nb = document.getElementById('materi-nav-btns');
+  if (nb) nb.style.display = 'none';
+};
+
+/* ============================================================
+   LKPD GROUP SYSTEM
+   ============================================================ */
+let currentLKPDGroup = 1;
+// Storage key: bioimun_lkpd_grp_{user}_{groupNum}
+function lkpdGroupKey(g) {
+  return 'bioimun_lkpd_grp_' + (currentUser ? currentUser.username : 'x') + '_' + g;
+}
+function loadGroupProgress(g) {
+  try { return JSON.parse(localStorage.getItem(lkpdGroupKey(g))) || { stages:[false,false,false,false,false] }; }
+  catch(e) { return { stages:[false,false,false,false,false] }; }
+}
+function saveGroupProgress(g, data) {
+  try { localStorage.setItem(lkpdGroupKey(g), JSON.stringify(data)); } catch(e) {}
+}
+
+function refreshGroupStatus() {
+  for (let g = 1; g <= 6; g++) {
+    const prog  = loadGroupProgress(g);
+    const done  = prog.stages.filter(Boolean).length;
+    const el    = document.getElementById('grp-status-' + g);
+    if (!el) continue;
+    if (done === 5) { el.textContent = '✅ Selesai'; el.style.color = 'var(--success)'; }
+    else if (done > 0) { el.textContent = `📝 Tahap ${done}/5 selesai`; el.style.color = 'var(--accent)'; }
+    else { el.textContent = 'Belum dimulai'; el.style.color = 'var(--text-muted)'; }
+  }
+}
+
+function openLKPDGroup(g) {
+  currentLKPDGroup = g;
+  document.getElementById('lkpd-group-label').textContent = 'Kelompok ' + g;
+  document.getElementById('lkpd-kelompok-title').textContent = 'Kelompok: ' + g;
+
+  const prog = loadGroupProgress(g);
+  // update stage tabs
+  for (let i = 0; i < 5; i++) {
+    const tab = document.querySelector('#pbl-stages-detail [data-stage="' + i + '"]');
+    if (!tab) continue;
+    const unlocked = i === 0 || prog.stages[i-1];
+    tab.classList.toggle('pbl-locked', !unlocked);
+    tab.classList.toggle('active', i === 0);
+    tab.classList.toggle('pbl-done', prog.stages[i]);
+    const badge = tab.querySelector('.pbl-stage-badge');
+    if (badge) badge.textContent = prog.stages[i] ? '✅' : unlocked ? '📝' : '🔒';
+  }
+  navigateTo('lkpd-detail');
+  openPBLDetail(0);
+}
+
+let currentPBLDetailStage = 0;
+function openPBLDetail(idx) {
+  const prog = loadGroupProgress(currentLKPDGroup);
+  const unlocked = idx === 0 || prog.stages[idx-1];
+  if (!unlocked) { showToast('🔒 Selesaikan tahap sebelumnya terlebih dahulu!', 'error'); return; }
+
+  currentPBLDetailStage = idx;
+  document.querySelectorAll('#pbl-stages-detail .pbl-stage-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+
+  const area = document.getElementById('pbl-detail-content-area');
+  area.innerHTML = PBL_DETAIL_CONTENT[idx];
+}
+
+function submitPBLDetail(idx, textareaId) {
+  const ta = document.getElementById(textareaId);
+  if (!ta || ta.value.trim().length < 20) {
+    showToast('⚠️ Isi kolom teks dahulu (minimal 20 karakter)!', 'error');
+    if (ta) ta.focus();
+    return;
+  }
+  const prog = loadGroupProgress(currentLKPDGroup);
+  prog.stages[idx] = true;
+  saveGroupProgress(currentLKPDGroup, prog);
+
+  // ── SYNC LKPD ke Google Sheets ──
+  if (typeof syncLKPD === 'function') syncLKPD(currentLKPDGroup, idx);
+
+  // update tab badges
+  for (let i = 0; i < 5; i++) {
+    const tab = document.querySelector('#pbl-stages-detail [data-stage="' + i + '"]');
+    if (!tab) continue;
+    const un = i === 0 || prog.stages[i-1];
+    tab.classList.toggle('pbl-locked', !un);
+    tab.classList.toggle('pbl-done', prog.stages[i]);
+    const badge = tab.querySelector('.pbl-stage-badge');
+    if (badge) badge.textContent = prog.stages[i] ? '✅' : un ? '📝' : '🔒';
+  }
+  showToast('✅ Tahap ' + (idx+1) + ' selesai! ' + (idx < 4 ? 'Tahap berikutnya terbuka.' : 'LKPD selesai! 🎉'), 'success');
+  if (idx < 4) setTimeout(() => openPBLDetail(idx+1), 600);
+}
+
+/* PBL Detail Content — sesuai PDF LKPD */
+const PBL_DETAIL_CONTENT = [
+/* ─ Tahap 1: Orientasi Masalah ─ */
+`<div class="lkpd-content animate-in">
+  <h3 style="font-size:1.1rem;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;">1</span>
+    Orientasi Siswa pada Masalah
+  </h3>
+  <div class="case-box">
+    <h4>📰 Waspada Leptospirosis saat Banjir: Bakteri Masuk Lewat Kulit Lecet</h4>
+    <p>Dinas Kesehatan Kota Yogyakarta mengingatkan masyarakat untuk mewaspadai penyakit leptospirosis yang kerap meningkat saat musim hujan dan banjir. Penyakit ini disebabkan oleh bakteri <em>Leptospira</em> yang berasal dari urine tikus. Bakteri tersebut dapat masuk ke dalam tubuh manusia melalui kulit yang lecet atau luka, serta selaput lendir, saat seseorang berkontak dengan genangan air, selokan, atau lumpur yang terkontaminasi. Petugas kebersihan yang membersihkan selokan tanpa sarung tangan berisiko tinggi terpapar bakteri ini. Setelah bakteri berhasil masuk, tubuh penderita sering mengalami demam tinggi, nyeri otot, dan kemerahan pada area luka yang menunjukkan adanya proses peradangan.</p>
+    <p style="margin-top:10px;font-size:.82rem;opacity:.8;">Sumber: Dinas Kesehatan Kota Yogyakarta — Waspada Penyakit Leptospirosis pada Musim Hujan</p>
+  </div>
+  <div style="margin-top:20px;">
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">✏️ Tuliskan rumusan masalah berdasarkan kasus di atas!</label>
+    <textarea class="textarea-field" id="pbl-d-1a" placeholder="Tuliskan beberapa pertanyaan ilmiah yang muncul dari kasus tersebut (minimal 2 rumusan masalah)..." style="min-height:110px;"></textarea>
+  </div>
+  <div style="margin-top:16px;">
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">🎯 Berdasarkan rumusan masalah yang telah kalian buat, diskusikan dan pilih satu rumusan masalah yang akan kalian selesaikan!</label>
+    <textarea class="textarea-field" id="pbl-d-1b" placeholder="Tuliskan satu rumusan masalah utama yang dipilih kelompok..." style="min-height:80px;"></textarea>
+  </div>
+  <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="submitPBLDetail(0,'pbl-d-1a')">
+    <i class="fas fa-check-circle"></i> Selesaikan Tahap 1
+  </button>
+</div>`,
+
+/* ─ Tahap 2: Organisasi Belajar ─ */
+`<div class="lkpd-content animate-in">
+  <h3 style="font-size:1.1rem;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;">2</span>
+    Mengorganisasikan Siswa untuk Belajar
+  </h3>
+  <div class="info-box" style="margin-bottom:18px;">
+    <ul style="margin:0;padding-left:18px;font-size:.9rem;line-height:1.9;">
+      <li>Pelajarilah konsep materi sistem pertahanan tubuh yang berhubungan dengan masalah melalui bahan ajar atau sumber bacaan yang relevan!</li>
+      <li>Tulislah konsep penting yang diperoleh dalam bentuk rangkuman dalam kotak di bawah ini!</li>
+    </ul>
+  </div>
+  <div style="margin-top:4px;">
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">📝 Rangkuman Konsep Penting Sistem Pertahanan Tubuh:</label>
+    <div style="border:2px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,var(--primary),var(--accent));padding:10px 16px;color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="fas fa-book-open"></i> Kotak Rangkuman Kelompok</div>
+      <textarea class="textarea-field" id="pbl-d-2a" placeholder="Tuliskan konsep-konsep penting tentang sistem pertahanan tubuh yang berkaitan dengan kasus leptospirosis...&#10;&#10;Contoh: pertahanan nonspesifik (kulit, inflamasi), pertahanan spesifik (antibodi, sel T), dll." style="min-height:220px;border:none;border-radius:0;background:#fff;"></textarea>
+    </div>
+  </div>
+  <div style="margin-top:14px;">
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">🔗 Sumber referensi yang digunakan:</label>
+    <textarea class="textarea-field" id="pbl-d-2b" placeholder="Tuliskan sumber bacaan yang kalian gunakan (buku, artikel, e-module, dll.)..." style="min-height:80px;"></textarea>
+  </div>
+  <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="submitPBLDetail(1,'pbl-d-2a')">
+    <i class="fas fa-check-circle"></i> Selesaikan Tahap 2
+  </button>
+</div>`,
+
+/* ─ Tahap 3: Penyelidikan ─ */
+`<div class="lkpd-content animate-in">
+  <h3 style="font-size:1.1rem;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;">3</span>
+    Membimbing Penyelidikan Individu dan Kelompok
+  </h3>
+  <div class="info-box" style="margin-bottom:18px;">
+    <ul style="margin:0;padding-left:18px;font-size:.9rem;line-height:1.9;">
+      <li>Setelah mempelajari konsep dasar, lakukan eksplorasi untuk mengumpulkan data atau informasi terkait permasalahan dari berbagai sumber terpercaya seperti artikel ilmiah, buku, atau wawancara dengan ahli!</li>
+      <li>Tulislah hasil eksplorasi data dan informasi penting terkait masalah yang dipilih dalam kotak di bawah ini!</li>
+    </ul>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:18px;">
+    <div style="padding:12px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'"><div style="font-size:1.3rem;margin-bottom:4px;">🏛️</div><div style="font-size:.8rem;font-weight:700;">PubMed</div></div>
+    <div style="padding:12px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'"><div style="font-size:1.3rem;margin-bottom:4px;">🏥</div><div style="font-size:.8rem;font-weight:700;">Kemenkes RI</div></div>
+    <div style="padding:12px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'"><div style="font-size:1.3rem;margin-bottom:4px;">🔬</div><div style="font-size:.8rem;font-weight:700;">WHO</div></div>
+    <div style="padding:12px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'" onclick="navigateTo('ruangbelajar')"><div style="font-size:1.3rem;margin-bottom:4px;">📚</div><div style="font-size:.8rem;font-weight:700;">Ruang Belajar</div></div>
+  </div>
+  <div>
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">📊 Hasil eksplorasi data dan informasi penting terkait masalah yang dipilih:</label>
+    <div style="border:2px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,var(--accent),var(--accent-dark));padding:10px 16px;color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="fas fa-microscope"></i> Kotak Penyelidikan Kelompok</div>
+      <textarea class="textarea-field" id="pbl-d-3a" placeholder="Tuliskan data, fakta, dan informasi penting dari hasil penyelidikan kalian. Sertakan sumber informasi untuk setiap temuan..." style="min-height:220px;border:none;border-radius:0;background:#fff;"></textarea>
+    </div>
+  </div>
+  <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="submitPBLDetail(2,'pbl-d-3a')">
+    <i class="fas fa-check-circle"></i> Selesaikan Tahap 3
+  </button>
+</div>`,
+
+/* ─ Tahap 4: Penyajian Hasil ─ */
+`<div class="lkpd-content animate-in">
+  <h3 style="font-size:1.1rem;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;">4</span>
+    Mengembangkan dan Menyajikan Hasil
+  </h3>
+  <div class="info-box" style="margin-bottom:18px;">
+    <ul style="margin:0;padding-left:18px;font-size:.9rem;line-height:1.9;">
+      <li>Berdasarkan hasil penyelidikan, rumuskan gagasan solusi untuk masalah yang telah kalian tentukan!</li>
+      <li>Tuliskan gagasan solusi yang dibuat pada kotak di bawah ini!</li>
+      <li>Presentasikan gagasan solusi yang dipilih di depan kelas!</li>
+    </ul>
+  </div>
+  <div>
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">💡 Gagasan Solusi Kelompok:</label>
+    <div style="border:2px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#f59e0b,#d97706);padding:10px 16px;color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="fas fa-lightbulb"></i> Kotak Gagasan Solusi</div>
+      <textarea class="textarea-field" id="pbl-d-4a" placeholder="Tuliskan gagasan solusi berdasarkan hasil penyelidikan. Jelaskan: apa solusinya, bagaimana cara kerjanya, dan mengapa solusi ini efektif berdasarkan konsep imunologi..." style="min-height:220px;border:none;border-radius:0;background:#fff;"></textarea>
+    </div>
+  </div>
+  <div style="margin-top:14px;">
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">🎤 Rencana presentasi (poin-poin utama yang akan disampaikan):</label>
+    <textarea class="textarea-field" id="pbl-d-4b" placeholder="Tuliskan poin-poin utama yang akan dipresentasikan di depan kelas..." style="min-height:90px;"></textarea>
+  </div>
+  <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="submitPBLDetail(3,'pbl-d-4a')">
+    <i class="fas fa-check-circle"></i> Selesaikan Tahap 4
+  </button>
+</div>`,
+
+/* ─ Tahap 5: Evaluasi ─ */
+`<div class="lkpd-content animate-in">
+  <h3 style="font-size:1.1rem;font-weight:800;color:var(--primary-dark);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;">5</span>
+    Menganalisis dan Mengevaluasi Proses Pemecahan Masalah
+  </h3>
+  <div class="info-box" style="margin-bottom:18px;">
+    <strong>📌 Petunjuk:</strong> Analisislah gagasan solusi yang diajukan dengan menuliskan kelebihan dan kekurangan, lalu tuliskan evaluasi proses pemecahan masalah.
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+    <div>
+      <label style="font-size:.92rem;font-weight:700;color:var(--success);display:block;margin-bottom:8px;">✅ Kelebihan gagasan solusi:</label>
+      <textarea class="textarea-field" id="pbl-d-5a" placeholder="Tuliskan kelebihan dari gagasan solusi yang diajukan kelompok..." style="min-height:130px;"></textarea>
+    </div>
+    <div>
+      <label style="font-size:.92rem;font-weight:700;color:var(--danger);display:block;margin-bottom:8px;">⚠️ Kekurangan gagasan solusi:</label>
+      <textarea class="textarea-field" id="pbl-d-5b" placeholder="Tuliskan kekurangan atau keterbatasan dari gagasan solusi yang diajukan..." style="min-height:130px;"></textarea>
+    </div>
+  </div>
+  <div>
+    <label style="font-size:.92rem;font-weight:700;color:var(--text);display:block;margin-bottom:8px;">🔄 Evaluasi proses pemecahan masalah:</label>
+    <div style="border:2px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,var(--primary-dark),var(--primary));padding:10px 16px;color:#fff;font-size:.85rem;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="fas fa-chart-line"></i> Kotak Evaluasi Proses</div>
+      <textarea class="textarea-field" id="pbl-d-5c" placeholder="Tuliskan evaluasi proses pemecahan masalah yang telah kalian lakukan. Meliputi: apa yang berjalan dengan baik, apa yang perlu diperbaiki, dan apa yang dipelajari dari proses ini..." style="min-height:160px;border:none;border-radius:0;background:#fff;"></textarea>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:12px;padding:14px 16px;font-size:.85rem;color:#78350f;">
+    <i class="fas fa-eye-slash"></i> <strong>Catatan:</strong> Evaluasi proses ini hanya dapat dilihat oleh guru/pengembang.
+  </div>
+  <button class="btn-primary" style="margin-top:20px;width:100%;background:linear-gradient(135deg,#15803d,#059669);" onclick="submitPBLDetail(4,'pbl-d-5c')">
+    <i class="fas fa-flag-checkered"></i> Selesaikan LKPD — Semua Tahap Selesai! 🎉
+  </button>
+</div>`
+];
+
+/* ============================================================
+   PRE-TEST / POST-TEST / REFLEKTIF SUBMIT
+   ============================================================ */
+function submitTest(type) {
+  const qMap = {
+    pretest:  ['pre-q1','pre-q2','pre-q3','pre-q4','pre-q5'],
+    posttest: ['post-q1','post-q2','post-q3','post-q4','post-q5'],
+    reflektif:['ref-q1','ref-q2','ref-q3','ref-q4','ref-q5']
+  };
+  const ids = qMap[type];
+  let allFilled = true;
+  ids.forEach(id => { const el = document.getElementById(id); if (!el || el.value.trim().length < 10) allFilled = false; });
+  if (!allFilled) { showToast('⚠️ Isi semua soal dengan jawaban lengkap (min. 10 karakter)!', 'error'); return; }
+
+  // Save to localStorage
+  const data = {};
+  ids.forEach(id => { const el = document.getElementById(id); if (el) data[id] = el.value; });
+  try { localStorage.setItem('bioimun_' + type + '_' + (currentUser ? currentUser.username : 'x'), JSON.stringify(data)); } catch(e) {}
+
+  // Show submitted UI
+  const msgEl = document.getElementById(type + '-submitted-msg');
+  const btnEl = document.getElementById(type + '-submit-btn');
+  if (msgEl) { msgEl.style.display = 'block'; msgEl.scrollIntoView({ behavior:'smooth', block:'center' }); }
+  if (btnEl) btnEl.style.display = 'none';
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.disabled = true; });
+
+  // ── SYNC ke Google Sheets ──
+  const jawaban = ids.map(id => { const el = document.getElementById(id); return el ? el.value : ''; });
+  if (type === 'pretest'   && typeof syncPretest   === 'function') syncPretest(jawaban);
+  if (type === 'posttest'  && typeof syncPosttest  === 'function') syncPosttest(jawaban);
+  if (type === 'reflektif' && typeof syncReflektif === 'function') syncReflektif(jawaban);
+
+  showToast('✅ ' + { pretest:'Pre-Test', posttest:'Post-Test', reflektif:'Esai Reflektif' }[type] + ' berhasil dikumpulkan!', 'success');
+}
+
+function restoreTest(type) {
+  const qMap = {
+    pretest:  ['pre-q1','pre-q2','pre-q3','pre-q4','pre-q5'],
+    posttest: ['post-q1','post-q2','post-q3','post-q4','post-q5'],
+    reflektif:['ref-q1','ref-q2','ref-q3','ref-q4','ref-q5']
+  };
+  try {
+    const raw = localStorage.getItem('bioimun_' + type + '_' + (currentUser ? currentUser.username : 'x'));
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    qMap[type].forEach(id => { const el = document.getElementById(id); if (el && data[id]) { el.value = data[id]; el.disabled = true; } });
+    const msgEl = document.getElementById(type + '-submitted-msg');
+    const btnEl = document.getElementById(type + '-submit-btn');
+    if (msgEl) msgEl.style.display = 'block';
+    if (btnEl) btnEl.style.display = 'none';
+  } catch(e) {}
+}
+
+/* ============================================================
+   ANGKET OWNERSHIP OF LEARNING
+   ============================================================ */
+const ANGKET_ITEMS = [
+  { dim:'Tanggung Jawab', text:'Saya merasa bertanggung jawab atas proses belajar saya sendiri.' },
+  { dim:'Tanggung Jawab', text:'Saya mengerjakan tugas dan kuis secara mandiri tanpa bergantung pada teman.' },
+  { dim:'Tanggung Jawab', text:'Saya berusaha memahami materi meskipun tidak dipaksa oleh guru.' },
+  { dim:'Motivasi', text:'Saya belajar karena ingin benar-benar memahami materi, bukan hanya untuk nilai.' },
+  { dim:'Motivasi', text:'Saya merasa tertarik dan antusias saat mempelajari materi sistem pertahanan tubuh.' },
+  { dim:'Motivasi', text:'Saya tidak mudah menyerah meskipun menghadapi materi yang sulit.' },
+  { dim:'Kemandirian', text:'Saya aktif mencari sumber belajar tambahan di luar yang disediakan oleh e-module.' },
+  { dim:'Kemandirian', text:'Saya dapat mengatur waktu belajar saya sendiri dengan baik.' },
+  { dim:'Kemandirian', text:'Saya mampu menentukan bagian mana yang perlu saya pelajari lebih dalam.' },
+  { dim:'Keterlibatan', text:'Saya aktif berpartisipasi dalam diskusi kelompok dan forum LKPD.' },
+  { dim:'Keterlibatan', text:'Saya memberikan kontribusi nyata dalam pengerjaan LKPD kelompok.' },
+  { dim:'Keterlibatan', text:'Saya membaca seluruh materi dengan sungguh-sungguh sebelum mengerjakan kuis.' },
+  { dim:'Refleksi', text:'Setelah belajar, saya merefleksikan apa yang telah dipelajari dan apa yang belum dipahami.' },
+  { dim:'Refleksi', text:'Saya mengevaluasi kemajuan belajar saya secara berkala.' },
+  { dim:'Refleksi', text:'Saya merasa pembelajaran ini bermanfaat bagi kehidupan saya sehari-hari.' },
+];
+
+function initAngket() {
+  const container = document.getElementById('angket-questions');
+  if (!container || container.children.length > 0) return;
+  const saved = (() => { try { return JSON.parse(localStorage.getItem('bioimun_angket_' + (currentUser ? currentUser.username : 'x'))) || {}; } catch(e) { return {}; } })();
+  const isSubmitted = !!saved.submitted;
+
+  let html = '';
+  ANGKET_ITEMS.forEach((item, i) => {
+    const dimColors = { 'Tanggung Jawab':'var(--primary)','Motivasi':'var(--accent)','Kemandirian':'var(--warning)','Keterlibatan':'var(--success)','Refleksi':'#a855f7' };
+    html += `<div style="padding:16px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+        <div style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;flex-shrink:0;">${i+1}</div>
+        <div>
+          <span style="font-size:.72rem;font-weight:800;color:${dimColors[item.dim]};background:${dimColors[item.dim]}18;padding:2px 8px;border-radius:8px;">${item.dim}</span>
+          <p style="font-size:.92rem;color:var(--text);line-height:1.6;margin-top:6px;">${item.text}</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-left:38px;">
+        ${[1,2,3,4,5].map(v => {
+          const labels = {1:'Sangat Tidak Setuju',2:'Tidak Setuju',3:'Netral',4:'Setuju',5:'Sangat Setuju'};
+          const checked = saved['a'+i] == v ? 'checked' : '';
+          const disabled = isSubmitted ? 'disabled' : '';
+          return `<label style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:${isSubmitted?'default':'pointer'};">
+            <input type="radio" name="angket-${i}" value="${v}" ${checked} ${disabled} style="width:18px;height:18px;accent-color:var(--primary);">
+            <span style="font-size:.68rem;font-weight:700;color:var(--text-muted);text-align:center;">${v}<br><span style="font-size:.6rem;">${v===1?'STS':v===2?'TS':v===3?'N':v===4?'S':'SS'}</span></span>
+          </label>`;
+        }).join('')}
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  if (isSubmitted) {
+    showAngketResult(saved.score);
+    document.getElementById('angket-submit-btn').style.display = 'none';
+  }
+}
+
+function submitAngket() {
+  let score = 0; let unanswered = 0;
+  const vals = {};
+  ANGKET_ITEMS.forEach((_, i) => {
+    const sel = document.querySelector(`input[name="angket-${i}"]:checked`);
+    if (!sel) { unanswered++; } else { vals['a'+i] = parseInt(sel.value); score += parseInt(sel.value); }
+  });
+  if (unanswered > 0) { showToast(`⚠️ ${unanswered} pernyataan belum dijawab!`, 'error'); return; }
+  vals.score = score; vals.submitted = true;
+  try { localStorage.setItem('bioimun_angket_' + (currentUser ? currentUser.username : 'x'), JSON.stringify(vals)); } catch(e) {}
+  ANGKET_ITEMS.forEach((_, i) => { document.querySelectorAll(`input[name="angket-${i}"]`).forEach(r => r.disabled = true); });
+  document.getElementById('angket-submit-btn').style.display = 'none';
+
+  // ── SYNC angket ke Google Sheets ──
+  const answers = ANGKET_ITEMS.map((_, i) => vals['a'+i] || 0);
+  if (typeof syncAngket === 'function') syncAngket(answers);
+
+  showAngketResult(score);
+  showToast('✅ Angket berhasil dikumpulkan!', 'success');
+}
+
+function showAngketResult(score) {
+  const max = ANGKET_ITEMS.length * 5;
+  const pct = Math.round(score / max * 100);
+  const el = document.getElementById('angket-result');
+  const sv = document.getElementById('angket-score-val');
+  const sm = document.getElementById('angket-result-msg');
+  if (!el) return;
+  el.style.display = 'block';
+  if (sv) sv.textContent = score + ' / ' + max + ' (' + pct + '%)';
+  if (sm) {
+    if (pct >= 80) sm.textContent = '🌟 Ownership of Learning kamu sangat tinggi! Kamu adalah pelajar yang mandiri dan bertanggung jawab.';
+    else if (pct >= 65) sm.textContent = '👍 Ownership of Learning kamu baik. Terus kembangkan kemandirian dan motivasi belajarmu!';
+    else if (pct >= 50) sm.textContent = '📚 Ownership of Learning kamu cukup. Ada banyak area yang bisa ditingkatkan.';
+    else sm.textContent = '💪 Ownership of Learning kamu perlu ditingkatkan. Coba lebih aktif dan bertanggung jawab dalam belajar!';
+  }
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* ── Init: refresh group status on load ── */
+setTimeout(refreshGroupStatus, 200);
+</script>
+</body>
+</html>

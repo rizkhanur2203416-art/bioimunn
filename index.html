@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioImun – Login | E-Module Sistem Pertahanan Tubuh</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #1a6b4a;
+  --primary-light: #27a96e;
+  --primary-dark: #0d4530;
+  --accent: #0e7fb5;
+  --accent-light: #38b6f0;
+  --bg: #f4faf7;
+  --bg2: #e6f2ed;
+  --white: #ffffff;
+  --text: #1a2e25;
+  --text-muted: #5a7a6a;
+  --border: #c4ddd1;
+  --danger: #ef4444;
+  --success: #22c55e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(135deg, #0a3322 0%, #0d4530 35%, #1a6b4a 70%, #0e7fb5 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative blobs */
+body::before {
+  content: '';
+  position: fixed;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(56,182,240,.16) 0%, transparent 70%);
+  top: -120px; right: -120px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(39,169,110,.14) 0%, transparent 70%);
+  bottom: -100px; left: -100px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-6px); }
+  40%,80% { transform: translateX(6px); }
+}
+
+.animate-in { animation: fadeSlideUp .65s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── WRAPPER ── */
+.login-wrapper {
+  display: flex;
+  max-width: 940px;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.50), 0 0 0 1px rgba(255,255,255,.07);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── VISUAL PANEL (LEFT) ── */
+.login-visual {
+  flex: 1;
+  background: linear-gradient(160deg, #081e14 0%, #0d4530 40%, #1a6b4a 75%, #0e7fb5 100%);
+  padding: 52px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-width: 300px;
+}
+
+.login-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.deco-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.07);
+}
+.deco-ring-1 { width: 260px; height: 260px; bottom: -80px; right: -80px; }
+.deco-ring-2 { width: 160px; height: 160px; top: 20px;  right: 10px; animation: spinSlow 22s linear infinite; }
+.deco-ring-3 { width: 80px;  height: 80px;  top: 60px;  right: 50px; animation: spinSlow 14s linear infinite reverse; border-color: rgba(56,182,240,.18); }
+
+.login-brand { position: relative; z-index: 1; }
+
+.login-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.9rem;
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 14px;
+  letter-spacing: -.5px;
+}
+.login-brand h1 span { color: #38b6f0; }
+
+.login-brand .tagline {
+  font-size: .95rem;
+  opacity: .82;
+  line-height: 1.7;
+}
+.login-brand .sub-tagline {
+  margin-top: 10px;
+  font-size: .76rem;
+  opacity: .52;
+}
+
+.login-visual-cells {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cell-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  backdrop-filter: blur(12px);
+  transition: background .2s, transform .2s;
+}
+.cell-card:hover { background: rgba(255,255,255,.14); transform: translateX(4px); }
+.cell-card i { font-size: 1.3rem; color: #38b6f0; flex-shrink: 0; }
+.cell-card span { font-size: .85rem; font-weight: 600; opacity: .92; }
+
+/* ── FORM PANEL (RIGHT) ── */
+.login-form-box {
+  flex: 1;
+  background: #fff;
+  padding: 52px 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+/* ← Back link */
+.back-link {
+  position: absolute;
+  top: 22px; left: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color .2s, gap .2s;
+  letter-spacing: .2px;
+}
+.back-link:hover { color: var(--primary); gap: 10px; }
+.back-link i { font-size: .78rem; transition: transform .2s; }
+.back-link:hover i { transform: translateX(-3px); }
+
+/* Heading */
+.form-heading { margin-bottom: 26px; }
+.form-heading h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary-dark);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.form-heading p { color: var(--text-muted); font-size: .91rem; }
+
+/* Form groups */
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 7px;
+}
+
+.input-wrap { position: relative; }
+
+.input-wrap .icon-left {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: .88rem;
+  pointer-events: none;
+  transition: color .2s;
+}
+
+/* Eye icon – show/hide password */
+.icon-eye {
+  position: absolute;
+  right: 13px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: .88rem;
+  cursor: pointer;
+  padding: 5px 6px;
+  border-radius: 7px;
+  transition: color .2s, background .2s;
+  user-select: none;
+}
+.icon-eye:hover { color: var(--primary); background: var(--bg2); }
+
+.form-group input {
+  width: 100%;
+  padding: 13px 44px 13px 42px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: .93rem;
+  color: var(--text);
+  outline: none;
+  transition: border .2s, box-shadow .2s, background .2s;
+  background: var(--bg);
+}
+.form-group input:focus {
+  border-color: var(--primary-light);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(39,169,110,.1);
+}
+.form-group input.input-error { border-color: var(--danger); animation: shake .4s ease; }
+
+/* Error box */
+.login-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #991b1b;
+  font-size: .84rem;
+  font-weight: 700;
+  padding: 11px 16px;
+  margin-top: 10px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── PRIMARY BUTTON ── */
+.btn-login {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--accent) 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .25s;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: .3px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-login::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background .2s;
+}
+.btn-login:hover::before { background: rgba(255,255,255,.08); }
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(14,127,181,.42);
+}
+.btn-login:active { transform: translateY(0); box-shadow: none; }
+.btn-login:disabled { opacity: .72; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-arrow { font-style: normal; transition: transform .2s; display: inline-block; }
+.btn-login:hover .btn-arrow { transform: translateX(5px); }
+
+/* ── DIVIDER "atau" ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 16px;
+  color: var(--text-muted);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── REGISTER LINK ── */
+.register-row {
+  text-align: center;
+  font-size: .88rem;
+  color: var(--text-muted);
+}
+.register-row a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: none;
+  transition: color .2s;
+  position: relative;
+}
+.register-row a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 0; height: 2px;
+  background: var(--primary-light);
+  border-radius: 2px;
+  transition: width .25s;
+}
+.register-row a:hover { color: var(--accent); }
+.register-row a:hover::after { width: 100%; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .login-visual { display: none; }
+  .login-form-box { padding: 54px 26px 36px; }
+  .login-wrapper { border-radius: 20px; max-width: 440px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-wrapper animate-in">
+
+  <!-- ══════════ VISUAL PANEL ══════════ -->
+  <div class="login-visual">
+    <div class="deco-ring deco-ring-1"></div>
+    <div class="deco-ring deco-ring-2"></div>
+    <div class="deco-ring deco-ring-3"></div>
+
+    <div class="login-brand">
+      <h1>Bio<span>Imun</span></h1>
+      <p class="tagline">E-Module Pembelajaran Biologi<br>Sistem Pertahanan Tubuh Manusia</p>
+      <p class="sub-tagline">Untuk Siswa SMA Kelas XI &nbsp;·&nbsp; Kurikulum Merdeka</p>
+    </div>
+
+    <div class="login-visual-cells">
+      <div class="cell-card"><i class="fas fa-shield-virus"></i><span>Sistem Imun & Pertahanan Tubuh</span></div>
+      <div class="cell-card"><i class="fas fa-microscope"></i><span>Berbasis <em>Problem-Based Learning</em></span></div>
+      <div class="cell-card"><i class="fas fa-graduation-cap"></i><span>Interaktif &amp; Modern</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════ FORM PANEL ══════════ -->
+  <div class="login-form-box">
+
+    <!-- ← Kembali ke Beranda -->
+    <a href="index.html" class="back-link">
+      <i class="fas fa-chevron-left"></i> Kembali ke Beranda
+    </a>
+
+    <div class="form-heading">
+      <h2>Selamat Datang! 👋</h2>
+      <p>Masuk ke platform belajar BioImun</p>
+    </div>
+
+    <!-- Username / Email -->
+    <div class="form-group">
+      <label>Username atau Email</label>
+      <div class="input-wrap">
+        <i class="fas fa-user icon-left"></i>
+        <input type="text" id="inp-user" placeholder="Masukkan username atau email" autocomplete="username">
+      </div>
+    </div>
+
+    <!-- Password + eye icon -->
+    <div class="form-group">
+      <label>Password</label>
+      <div class="input-wrap">
+        <i class="fas fa-lock icon-left"></i>
+        <input type="password" id="inp-pass" placeholder="Masukkan password"
+               autocomplete="current-password"
+               onkeydown="if(event.key==='Enter') doLogin()">
+        <i class="fas fa-eye icon-eye" id="eye-icon" onclick="togglePassword()" title="Tampilkan / sembunyikan password"></i>
+      </div>
+    </div>
+
+    <!-- Error message -->
+    <div class="login-error" id="login-err">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="login-err-text">Username/email atau password salah!</span>
+    </div>
+
+    <!-- ✦ Tombol Masuk -->
+    <button class="btn-login" id="btn-login-main" onclick="doLogin()">
+      Masuk <span class="btn-arrow">→</span>
+    </button>
+
+    <!-- ── atau ── -->
+    <div class="divider">atau</div>
+
+    <!-- Belum punya akun? -->
+    <div class="register-row">
+      Belum punya akun? <a href="register.html">Daftar sekarang</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SCRIPT
+══════════════════════════════════ -->
+<script>
+const USERS_DB_KEY = 'bioimun_registered_users';
+
+/* Akun bawaan (selalu ada) */
+const DEFAULT_USERS = {
+  siswa: { pass: 'siswa123', role: 'siswa', name: 'Ahmad Fauzi', kelas: 'XI IPA 2',     email: 'siswa@bioimun.id' },
+  guru:  { pass: 'guru123',  role: 'guru',  name: 'Ibu Sari',    kelas: 'Guru Biologi', email: 'guru@bioimun.id'  }
+};
+
+/* Gabungkan akun default + akun yang didaftarkan via register.html */
+function getAllUsers() {
+  const extra = localStorage.getItem(USERS_DB_KEY);
+  return extra ? { ...DEFAULT_USERS, ...JSON.parse(extra) } : { ...DEFAULT_USERS };
+}
+
+/* Auto-redirect jika sudah login */
+if (sessionStorage.getItem('bioimun_user')) {
+  window.location.href = 'dashboard.html';
+}
+
+/* ── Toggle show/hide password ── */
+function togglePassword() {
+  const inp  = document.getElementById('inp-pass');
+  const icon = document.getElementById('eye-icon');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    inp.type = 'password';
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
+}
+
+/* ── Show error helper ── */
+function showError(msg) {
+  const err = document.getElementById('login-err');
+  document.getElementById('login-err-text').textContent = msg;
+  err.style.display = 'flex';
+  // Shake the inputs
+  document.getElementById('inp-user').classList.add('input-error');
+  document.getElementById('inp-pass').classList.add('input-error');
+  setTimeout(() => {
+    document.getElementById('inp-user').classList.remove('input-error');
+    document.getElementById('inp-pass').classList.remove('input-error');
+    err.style.display = 'none';
+  }, 3500);
+}
+
+/* ── Login logic ── */
+function doLogin() {
+  const u   = document.getElementById('inp-user').value.trim();
+  const p   = document.getElementById('inp-pass').value;
+  const btn = document.getElementById('btn-login-main');
+
+  if (!u || !p) {
+    showError('Lengkapi username/email dan password!');
+    return;
+  }
+
+  /* Loading state */
+  btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
+  btn.disabled   = true;
+
+  setTimeout(() => {
+    const USERS = getAllUsers();
+    let match = null, matchKey = null;
+
+    for (const [key, val] of Object.entries(USERS)) {
+      const usernameMatch = key === u;
+      const emailMatch    = val.email && val.email.toLowerCase() === u.toLowerCase();
+      if ((usernameMatch || emailMatch) && val.pass === p) {
+        match    = val;
+        matchKey = key;
+        break;
+      }
+    }
+
+    if (!match) {
+      showError('Username/email atau password salah!');
+      btn.innerHTML = 'Masuk <span class="btn-arrow">→</span>';
+      btn.disabled  = false;
+      return;
+    }
+
+    /* Sukses */
+    sessionStorage.setItem('bioimun_user', JSON.stringify({ ...match, username: matchKey }));
+    // ── SYNC login ke Google Sheets ──
+    if (typeof syncLogin === 'function') {
+      syncLogin({ username: matchKey, name: match.name, role: match.role, kelas: match.kelas || '—' });
+    } else if (typeof sendToSheet === 'function') {
+      sendToSheet('login', { username: matchKey, nama: match.name, role: match.role, kelas: match.kelas || '—' });
+    }
+    btn.innerHTML = '<i class="fas fa-check"></i> Berhasil! Mengalihkan...';
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 600);
+  }, 750);
+}
+</script>
+<script src="sync.js"></script>
+</body>
+</html>
